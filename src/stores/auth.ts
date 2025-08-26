@@ -68,9 +68,9 @@ export const useAuthStore = create<AuthState>()(
               const user: User = {
                 id: firebaseUser.uid,
                 ...userData,
-                createdAt: userData.createdAt?.toDate?.() || new Date(),
-                updatedAt: userData.updatedAt?.toDate?.() || new Date(),
-                dateOfBirth: userData.dateOfBirth?.toDate?.() || new Date(),
+                createdAt: (userData.createdAt as any)?.toDate?.() || userData.createdAt || new Date(),
+                updatedAt: (userData.updatedAt as any)?.toDate?.() || userData.updatedAt || new Date(),
+                dateOfBirth: (userData.dateOfBirth as any)?.toDate?.() || userData.dateOfBirth || new Date(),
               }
               
               set({ 
@@ -189,9 +189,9 @@ export const useAuthStore = create<AuthState>()(
                   const user: User = {
                     id: firebaseUser.uid,
                     ...userData,
-                    createdAt: userData.createdAt?.toDate?.() || new Date(),
-                    updatedAt: userData.updatedAt?.toDate?.() || new Date(),
-                    dateOfBirth: userData.dateOfBirth?.toDate?.() || new Date(),
+                    createdAt: (userData.createdAt as any)?.toDate?.() || userData.createdAt || new Date(),
+                    updatedAt: (userData.updatedAt as any)?.toDate?.() || userData.updatedAt || new Date(),
+                    dateOfBirth: (userData.dateOfBirth as any)?.toDate?.() || userData.dateOfBirth || new Date(),
                   }
                   
                   set({ 
