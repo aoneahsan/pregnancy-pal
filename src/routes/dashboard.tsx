@@ -1,6 +1,6 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
 import { useEffect } from 'react'
-import { Heart, Calendar, Apple, Baby, TrendingUp, Bell, Droplet, Clock, ChefHat, AlertTriangle } from 'lucide-react'
+import { Heart, Calendar, Apple, Baby, TrendingUp, Bell, Droplet, Clock, ChefHat, AlertTriangle, Activity, Users, Dumbbell, HeartHandshake } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { useAuthStore } from '@/stores/auth'
@@ -76,6 +76,12 @@ function DashboardPage() {
             </div>
             
             <div className="flex items-center space-x-4">
+              <Link to="/donate">
+                <Button variant="outline" size="sm" className="bg-pink-50 hover:bg-pink-100 text-pink-600 border-pink-200">
+                  <HeartHandshake className="h-4 w-4 mr-2" />
+                  Donate
+                </Button>
+              </Link>
               <Bell className="h-6 w-6 text-gray-600 cursor-pointer hover:text-gray-900" />
               <div className="flex items-center space-x-2">
                 <div className="text-right">
@@ -155,11 +161,15 @@ function DashboardPage() {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="diet" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
             <TabsTrigger value="diet">Diet Plan</TabsTrigger>
             <TabsTrigger value="tracking">Daily Tracking</TabsTrigger>
             <TabsTrigger value="appointments">Appointments</TabsTrigger>
             <TabsTrigger value="education">Learn</TabsTrigger>
+            <TabsTrigger value="period">Period</TabsTrigger>
+            <TabsTrigger value="fertility">Fertility</TabsTrigger>
+            <TabsTrigger value="exercise">Exercise</TabsTrigger>
+            <TabsTrigger value="community">Community</TabsTrigger>
           </TabsList>
 
           {/* Diet Plan Tab */}
@@ -394,6 +404,185 @@ function DashboardPage() {
                 <p className="text-sm text-gray-500 mt-2">
                   Articles, tips, and guidance for every stage of pregnancy.
                 </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Period Tracker Tab */}
+          <TabsContent value="period">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span className="flex items-center">
+                    <Droplet className="h-5 w-5 mr-2 text-pink-500" />
+                    Period Tracker
+                  </span>
+                  <Link to="/period">
+                    <Button size="sm">Open Full Tracker</Button>
+                  </Link>
+                </CardTitle>
+                <CardDescription>Track your menstrual cycle and symptoms</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                  <Card className="bg-pink-50 border-pink-200">
+                    <CardContent className="pt-6">
+                      <div className="text-2xl font-bold text-pink-600">Day 14</div>
+                      <p className="text-sm text-gray-600">Current cycle day</p>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-purple-50 border-purple-200">
+                    <CardContent className="pt-6">
+                      <div className="text-2xl font-bold text-purple-600">28 days</div>
+                      <p className="text-sm text-gray-600">Average cycle length</p>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-blue-50 border-blue-200">
+                    <CardContent className="pt-6">
+                      <div className="text-2xl font-bold text-blue-600">5 days</div>
+                      <p className="text-sm text-gray-600">Next period in</p>
+                    </CardContent>
+                  </Card>
+                </div>
+                <Link to="/period">
+                  <Button className="w-full" variant="outline">
+                    <Activity className="h-4 w-4 mr-2" />
+                    Log Symptoms & Flow
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Fertility Tab */}
+          <TabsContent value="fertility">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span className="flex items-center">
+                    <Heart className="h-5 w-5 mr-2 text-red-500" />
+                    Fertility Tracking
+                  </span>
+                  <Link to="/fertility">
+                    <Button size="sm">Open Full Tracker</Button>
+                  </Link>
+                </CardTitle>
+                <CardDescription>Track your fertile window and ovulation</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 bg-gradient-to-r from-pink-100 to-purple-100 rounded-lg">
+                    <p className="text-sm font-medium mb-2">Fertile Window</p>
+                    <p className="text-lg font-bold">Dec 10 - Dec 15</p>
+                    <p className="text-xs text-gray-600 mt-1">High fertility period</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-gray-600">Ovulation Day</p>
+                      <p className="font-medium">Dec 13 (predicted)</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Fertility Score</p>
+                      <p className="font-medium">85% High</p>
+                    </div>
+                  </div>
+                  <Link to="/fertility">
+                    <Button className="w-full" variant="outline">
+                      Track BBT & Symptoms
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Exercise Tab */}
+          <TabsContent value="exercise">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span className="flex items-center">
+                    <Dumbbell className="h-5 w-5 mr-2 text-green-600" />
+                    Exercise & Fitness
+                  </span>
+                  <Link to="/exercise">
+                    <Button size="sm">Open Full Tracker</Button>
+                  </Link>
+                </CardTitle>
+                <CardDescription>Safe exercises for your pregnancy stage</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <Card className="border-2 hover:border-primary cursor-pointer transition-colors">
+                      <CardContent className="pt-6 text-center">
+                        <div className="text-3xl mb-2">🧘‍♀️</div>
+                        <p className="font-medium">Prenatal Yoga</p>
+                        <p className="text-xs text-gray-500">30 min</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="border-2 hover:border-primary cursor-pointer transition-colors">
+                      <CardContent className="pt-6 text-center">
+                        <div className="text-3xl mb-2">🚶‍♀️</div>
+                        <p className="font-medium">Walking</p>
+                        <p className="text-xs text-gray-500">45 min</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="border-2 hover:border-primary cursor-pointer transition-colors">
+                      <CardContent className="pt-6 text-center">
+                        <div className="text-3xl mb-2">🏊‍♀️</div>
+                        <p className="font-medium">Swimming</p>
+                        <p className="text-xs text-gray-500">30 min</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                  <div className="p-4 bg-green-50 rounded-lg">
+                    <p className="text-sm font-medium text-green-800 mb-2">Today's Goal</p>
+                    <Progress value={60} className="h-2 mb-2" />
+                    <p className="text-xs text-gray-600">18 of 30 minutes completed</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Community Tab */}
+          <TabsContent value="community">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Users className="h-5 w-5 mr-2 text-blue-600" />
+                  Community
+                </CardTitle>
+                <CardDescription>Connect with other women on similar journeys</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Card className="hover:shadow-md cursor-pointer transition-shadow">
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-sm">Due Date Groups</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-xs text-gray-600">Connect with moms due the same month</p>
+                        <Badge className="mt-2" variant="outline">March 2024</Badge>
+                      </CardContent>
+                    </Card>
+                    <Card className="hover:shadow-md cursor-pointer transition-shadow">
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-sm">TTC Community</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-xs text-gray-600">Support for those trying to conceive</p>
+                        <Badge className="mt-2" variant="outline">5.2k members</Badge>
+                      </CardContent>
+                    </Card>
+                  </div>
+                  <Button className="w-full" variant="outline">
+                    <Users className="h-4 w-4 mr-2" />
+                    Join Community Forums
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

@@ -79,10 +79,25 @@ function AuthPage() {
         title: 'Welcome back!',
         description: 'You have successfully signed in.',
       })
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Sign in error:', error)
+      let errorMessage = 'An unexpected error occurred'
+      
+      if (error?.code === 'auth/user-not-found') {
+        errorMessage = 'No account found with this email'
+      } else if (error?.code === 'auth/wrong-password') {
+        errorMessage = 'Incorrect password'
+      } else if (error?.code === 'auth/invalid-email') {
+        errorMessage = 'Invalid email address'
+      } else if (error?.code === 'auth/invalid-credential') {
+        errorMessage = 'Invalid email or password'
+      } else if (error?.message) {
+        errorMessage = error.message
+      }
+      
       toast({
         title: 'Sign in failed',
-        description: error instanceof Error ? error.message : 'An unexpected error occurred',
+        description: errorMessage,
         variant: 'destructive',
       })
     }
@@ -95,10 +110,23 @@ function AuthPage() {
         title: 'Welcome to PregnancyPal!',
         description: 'Your account has been created successfully.',
       })
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Sign up error:', error)
+      let errorMessage = 'An unexpected error occurred'
+      
+      if (error?.code === 'auth/email-already-in-use') {
+        errorMessage = 'An account already exists with this email'
+      } else if (error?.code === 'auth/weak-password') {
+        errorMessage = 'Password should be at least 6 characters'
+      } else if (error?.code === 'auth/invalid-email') {
+        errorMessage = 'Invalid email address'
+      } else if (error?.message) {
+        errorMessage = error.message
+      }
+      
       toast({
         title: 'Sign up failed',
-        description: error instanceof Error ? error.message : 'An unexpected error occurred',
+        description: errorMessage,
         variant: 'destructive',
       })
     }
@@ -346,7 +374,11 @@ function AuthPage() {
                     <Button
                       variant="link"
                       className="p-0 h-auto font-semibold"
-                      onClick={() => setMode('signup')}
+                      type="button"
+                      onClick={() => {
+                        setMode('signup')
+                        signInForm.reset()
+                      }}
                     >
                       Sign up
                     </Button>
@@ -357,7 +389,11 @@ function AuthPage() {
                     <Button
                       variant="link"
                       className="p-0 h-auto font-semibold"
-                      onClick={() => setMode('signin')}
+                      type="button"
+                      onClick={() => {
+                        setMode('signin')
+                        signUpForm.reset()
+                      }}
                     >
                       Sign in
                     </Button>

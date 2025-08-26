@@ -79,7 +79,31 @@ export const useAuthStore = create<AuthState>()(
                 isLoading: false 
               })
             } else {
-              throw new Error('User profile not found')
+              // User exists in Auth but not in Firestore - create profile
+              console.log('Creating missing user profile for:', firebaseUser.email)
+              
+              const userData: Omit<User, 'id'> = {
+                email: firebaseUser.email || email,
+                name: firebaseUser.displayName || email.split('@')[0],
+                isOnboarded: false,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                dateOfBirth: new Date(),
+                preferences: defaultPreferences,
+              }
+              
+              await setDoc(doc(db, 'users', firebaseUser.uid), userData)
+              
+              const user: User = {
+                id: firebaseUser.uid,
+                ...userData,
+              }
+              
+              set({ 
+                user, 
+                firebaseUser, 
+                isLoading: false 
+              })
             }
           } catch (error) {
             set({ isLoading: false })
@@ -201,11 +225,29 @@ export const useAuthStore = create<AuthState>()(
                     isInitialized: true 
                   })
                 } else {
-                  // User exists in Auth but not in Firestore - clean up
-                  await signOut(auth)
+                  // User exists in Auth but not in Firestore - create profile
+                  console.log('Creating missing user profile during init for:', firebaseUser.email)
+                  
+                  const userData: Omit<User, 'id'> = {
+                    email: firebaseUser.email || '',
+                    name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
+                    isOnboarded: false,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    dateOfBirth: new Date(),
+                    preferences: defaultPreferences,
+                  }
+                  
+                  await setDoc(doc(db, 'users', firebaseUser.uid), userData)
+                  
+                  const user: User = {
+                    id: firebaseUser.uid,
+                    ...userData,
+                  }
+                  
                   set({ 
-                    user: null, 
-                    firebaseUser: null, 
+                    user, 
+                    firebaseUser, 
                     isLoading: false,
                     isInitialized: true 
                   })

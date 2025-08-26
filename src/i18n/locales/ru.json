@@ -1,0 +1,419 @@
+{
+  "common": {
+    "appName": "PregnancyPal",
+    "tagline": "Your health, your data, your journey",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "continue": "Continue",
+    "finish": "Finish",
+    "close": "Close",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "share": "Share",
+    "download": "Download",
+    "upload": "Upload",
+    "settings": "Settings",
+    "profile": "Profile",
+    "logout": "Sign Out",
+    "login": "Sign In",
+    "signup": "Sign Up",
+    "donate": "Donate",
+    "help": "Help",
+    "about": "About",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact"
+  },
+  "landing": {
+    "hero": {
+      "title": "Your Pregnancy Companion",
+      "subtitle": "A warm, nurturing companion that provides personalized daily nutrition guidance and gentle support throughout your beautiful journey to motherhood.",
+      "cta": "Start Your Journey",
+      "learnMore": "Learn More"
+    },
+    "features": {
+      "title": "Everything You Need for a Healthy Pregnancy",
+      "subtitle": "Our comprehensive platform combines expert guidance, personalized recommendations, and caring support to help you thrive during pregnancy.",
+      "personalizedNutrition": {
+        "title": "Personalized Nutrition",
+        "description": "Get customized meal plans based on your pregnancy stage and health needs"
+      },
+      "weeklyTracking": {
+        "title": "Weekly Tracking",
+        "description": "Monitor your pregnancy journey week by week with detailed insights"
+      },
+      "babyDevelopment": {
+        "title": "Baby Development",
+        "description": "Learn about your baby's growth and development at every stage"
+      },
+      "healthMonitoring": {
+        "title": "Health Monitoring",
+        "description": "Track symptoms, mood, and overall wellness throughout your pregnancy"
+      },
+      "expertSupport": {
+        "title": "Expert Support",
+        "description": "Access evidence-based guidance from healthcare professionals"
+      },
+      "milestones": {
+        "title": "Milestone Celebrations",
+        "description": "Celebrate important moments and milestones in your pregnancy"
+      }
+    },
+    "cta": {
+      "title": "Ready to Begin Your Journey?",
+      "subtitle": "Join thousands of expecting mothers who trust PregnancyPal for their pregnancy wellness journey.",
+      "button": "Get Started Today"
+    }
+  },
+  "auth": {
+    "signIn": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to continue your journey",
+      "email": "Email Address",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot Password?",
+      "submit": "Sign In",
+      "noAccount": "Don't have an account?",
+      "signUp": "Create Account",
+      "errors": {
+        "invalidCredentials": "Invalid email or password",
+        "tooManyAttempts": "Too many attempts. Please try again later.",
+        "networkError": "Network error. Please check your connection."
+      }
+    },
+    "signUp": {
+      "title": "Join PregnancyPal",
+      "subtitle": "Create your account to start your pregnancy journey",
+      "name": "Full Name",
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "agree": "I agree to the",
+      "terms": "Terms of Service",
+      "and": "and",
+      "privacy": "Privacy Policy",
+      "submit": "Create Account",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign In",
+      "errors": {
+        "emailInUse": "Email is already registered",
+        "weakPassword": "Password must be at least 8 characters",
+        "passwordMismatch": "Passwords don't match",
+        "networkError": "Network error. Please try again."
+      }
+    }
+  },
+  "onboarding": {
+    "title": "Let's Personalize Your Journey",
+    "subtitle": "Tell us about your pregnancy so we can provide the best guidance",
+    "steps": {
+      "pregnancy": "Pregnancy Details",
+      "medical": "Medical History",
+      "health": "Health Conditions",
+      "diet": "Dietary Preferences"
+    },
+    "pregnancy": {
+      "title": "Pregnancy Details",
+      "subtitle": "Basic information about your pregnancy",
+      "lmp": "First Day of Last Menstrual Period",
+      "babies": "Number of Babies",
+      "single": "Single",
+      "twins": "Twins",
+      "triplets": "Triplets or More",
+      "currentWeek": "Current Week",
+      "dueDate": "Estimated Due Date"
+    },
+    "medical": {
+      "title": "Medical History",
+      "subtitle": "Help us understand any special considerations",
+      "highRisk": "Is this considered a high-risk pregnancy?",
+      "complications": "Any pregnancy complications? (Select all that apply)",
+      "gestationalDiabetes": "Gestational Diabetes",
+      "hypertension": "Hypertension",
+      "preeclampsia": "Preeclampsia",
+      "anemia": "Anemia",
+      "thyroid": "Thyroid Issues",
+      "miscarriage": "Previous Miscarriage",
+      "placenta": "Placenta Previa",
+      "multiple": "Multiple Pregnancies"
+    },
+    "health": {
+      "title": "Health Conditions",
+      "subtitle": "Any existing health conditions we should know about?",
+      "diabetes": "Diabetes",
+      "heart": "Heart Disease",
+      "asthma": "Asthma",
+      "thyroidDisorder": "Thyroid Disorder",
+      "pcos": "PCOS",
+      "endometriosis": "Endometriosis",
+      "autoimmune": "Autoimmune Condition",
+      "mental": "Mental Health Condition",
+      "other": "Other condition (optional)"
+    },
+    "diet": {
+      "title": "Dietary Preferences",
+      "subtitle": "Your dietary preferences and restrictions",
+      "vegetarian": "Vegetarian",
+      "vegan": "Vegan",
+      "glutenFree": "Gluten-Free",
+      "dairyFree": "Dairy-Free",
+      "nutAllergy": "Nut Allergy",
+      "seafoodAllergy": "Seafood Allergy",
+      "halal": "Halal",
+      "kosher": "Kosher",
+      "other": "Other dietary restriction (optional)"
+    },
+    "complete": {
+      "title": "Welcome to PregnancyPal!",
+      "subtitle": "Your personalized pregnancy journey begins now."
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {{name}}!",
+    "weekStatus": "You're in your {{trimester}} trimester, week {{week}}",
+    "babyThisWeek": "Your Baby This Week",
+    "progress": "Week {{current}} of {{total}}",
+    "size": "Size",
+    "length": "Length",
+    "weight": "Weight",
+    "dueDate": "Due Date",
+    "tabs": {
+      "diet": "Diet Plan",
+      "tracking": "Daily Tracking",
+      "appointments": "Appointments",
+      "education": "Learn",
+      "period": "Period Tracker",
+      "fertility": "Fertility",
+      "exercise": "Exercise",
+      "community": "Community"
+    },
+    "dietPlan": {
+      "title": "Today's Meal Plan",
+      "calories": "calories",
+      "instructions": "Instructions",
+      "tips": "Tips",
+      "nutrition": {
+        "title": "Daily Nutrition Targets",
+        "protein": "Protein",
+        "calcium": "Calcium",
+        "iron": "Iron",
+        "folate": "Folate",
+        "fiber": "Fiber",
+        "vitaminD": "Vitamin D"
+      },
+      "hydration": {
+        "title": "Hydration Reminder",
+        "description": "Aim for at least 8-10 glasses of water today. Proper hydration is essential for:",
+        "benefits": [
+          "Maintaining amniotic fluid levels",
+          "Preventing constipation and UTIs",
+          "Supporting increased blood volume",
+          "Regulating body temperature"
+        ]
+      },
+      "foodsToAvoid": {
+        "title": "Foods to Avoid During Pregnancy",
+        "highRisk": {
+          "title": "High-Risk Foods",
+          "items": [
+            "Raw or undercooked meat",
+            "Raw fish and high-mercury fish",
+            "Raw eggs",
+            "Unpasteurized dairy products"
+          ]
+        },
+        "limit": {
+          "title": "Limit Consumption",
+          "items": [
+            "Caffeine (max 200mg/day)",
+            "Processed foods",
+            "High-sugar foods",
+            "Artificial sweeteners"
+          ]
+        }
+      }
+    },
+    "periodTracker": {
+      "title": "Period Tracker",
+      "startPeriod": "Start Period",
+      "endPeriod": "End Period",
+      "logSymptoms": "Log Symptoms",
+      "flowIntensity": "Flow Intensity",
+      "spotting": "Spotting",
+      "light": "Light",
+      "medium": "Medium",
+      "heavy": "Heavy",
+      "veryHeavy": "Very Heavy",
+      "symptoms": {
+        "physical": "Physical",
+        "emotional": "Emotional",
+        "digestive": "Digestive",
+        "skin": "Skin",
+        "energy": "Energy",
+        "sexual": "Sexual"
+      },
+      "predictions": {
+        "nextPeriod": "Next Period",
+        "ovulation": "Ovulation",
+        "fertileWindow": "Fertile Window"
+      },
+      "statistics": {
+        "title": "Cycle Statistics",
+        "averageLength": "Average Cycle Length",
+        "periodLength": "Average Period Length",
+        "regularity": "Cycle Regularity",
+        "regular": "Regular",
+        "irregular": "Irregular",
+        "veryIrregular": "Very Irregular"
+      }
+    },
+    "fertility": {
+      "title": "Fertility Tracking",
+      "bbt": "Basal Body Temperature",
+      "cervicalMucus": "Cervical Mucus",
+      "cervicalPosition": "Cervical Position",
+      "opk": "Ovulation Test",
+      "sexualActivity": "Sexual Activity",
+      "protected": "Protected",
+      "unprotected": "Unprotected",
+      "fertilityScore": "Fertility Score"
+    },
+    "exercise": {
+      "title": "Exercise & Fitness",
+      "recommended": "Recommended for You",
+      "categories": {
+        "yoga": "Prenatal Yoga",
+        "walking": "Walking",
+        "swimming": "Swimming",
+        "strength": "Light Strength Training",
+        "pelvicFloor": "Pelvic Floor Exercises",
+        "breathing": "Breathing Exercises"
+      },
+      "duration": "Duration",
+      "intensity": "Intensity",
+      "low": "Low",
+      "moderate": "Moderate",
+      "high": "High"
+    },
+    "community": {
+      "title": "Community",
+      "groups": {
+        "dueDate": "Due Date Groups",
+        "ttc": "Trying to Conceive",
+        "highRisk": "High-Risk Pregnancy",
+        "rainbow": "Rainbow Babies",
+        "multiples": "Twins & Multiples",
+        "vbac": "VBAC Support"
+      },
+      "newPost": "New Post",
+      "trending": "Trending",
+      "recent": "Recent",
+      "myPosts": "My Posts"
+    }
+  },
+  "donation": {
+    "title": "Support PregnancyPal",
+    "subtitle": "Help us keep this app free for everyone",
+    "message": "PregnancyPal is completely free and always will be. We believe every woman deserves access to quality pregnancy and health tracking tools regardless of their financial situation.",
+    "why": {
+      "title": "Why Donate?",
+      "items": [
+        "Keep the app 100% free for all users",
+        "Support continuous development of new features",
+        "Maintain servers and infrastructure",
+        "Ensure data security and privacy",
+        "Help us reach more women globally"
+      ]
+    },
+    "amounts": {
+      "title": "Choose an Amount",
+      "custom": "Custom Amount",
+      "currency": "USD",
+      "oneTime": "One-time",
+      "monthly": "Monthly"
+    },
+    "methods": {
+      "title": "Payment Methods",
+      "card": "Credit/Debit Card",
+      "paypal": "PayPal",
+      "googlePay": "Google Pay",
+      "applePay": "Apple Pay"
+    },
+    "anonymous": "Make donation anonymous",
+    "tax": "Donations may be tax-deductible in your region",
+    "secure": "All payments are secure and encrypted",
+    "thankYou": {
+      "title": "Thank You!",
+      "message": "Your generosity helps us continue our mission to provide free health tools for women worldwide."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "account": {
+      "title": "Account",
+      "email": "Email",
+      "password": "Password",
+      "changePassword": "Change Password",
+      "deleteAccount": "Delete Account"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "language": "Language",
+      "theme": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "units": {
+        "title": "Units",
+        "weight": "Weight",
+        "height": "Height",
+        "temperature": "Temperature"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "dailyTips": "Daily Tips",
+      "appointments": "Appointment Reminders",
+      "milestones": "Milestone Alerts",
+      "dietReminders": "Diet Reminders",
+      "periodPredictions": "Period Predictions",
+      "fertileWindow": "Fertile Window Alerts"
+    },
+    "privacy": {
+      "title": "Privacy & Security",
+      "dataExport": "Export My Data",
+      "dataDelete": "Delete All Data",
+      "biometric": "Biometric Lock",
+      "anonymous": "Anonymous Mode"
+    },
+    "partner": {
+      "title": "Partner Sharing",
+      "invite": "Invite Partner",
+      "permissions": "Sharing Permissions",
+      "revoke": "Revoke Access"
+    }
+  },
+  "errors": {
+    "general": "Something went wrong. Please try again.",
+    "network": "Network error. Please check your connection.",
+    "notFound": "Page not found",
+    "unauthorized": "You need to sign in to access this page",
+    "forbidden": "You don't have permission to access this resource",
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email",
+      "minLength": "Must be at least {{min}} characters",
+      "maxLength": "Must be less than {{max}} characters",
+      "pattern": "Invalid format"
+    }
+  }
+}

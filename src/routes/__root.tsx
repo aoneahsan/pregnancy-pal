@@ -1,5 +1,5 @@
 import { createRootRoute, Outlet, useRouterState } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { Loader2 } from 'lucide-react'
 
 export const Route = createRootRoute({

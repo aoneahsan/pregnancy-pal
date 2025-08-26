@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { Toaster } from '@/components/ui/toaster'
 import { useAuthStore } from '@/stores/auth'
+import { AuthDebug } from '@/components/AuthDebug'
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
@@ -33,6 +34,7 @@ function App() {
     <>
       <RouterProvider router={router} />
       <Toaster />
+      <AuthDebug />
     </>
   )
 }

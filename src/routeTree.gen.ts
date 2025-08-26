@@ -9,14 +9,38 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PeriodRouteImport } from './routes/period'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as FertilityRouteImport } from './routes/fertility'
+import { Route as ExerciseRouteImport } from './routes/exercise'
+import { Route as DonateRouteImport } from './routes/donate'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 
+const PeriodRoute = PeriodRouteImport.update({
+  id: '/period',
+  path: '/period',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FertilityRoute = FertilityRouteImport.update({
+  id: '/fertility',
+  path: '/fertility',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExerciseRoute = ExerciseRouteImport.update({
+  id: '/exercise',
+  path: '/exercise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DonateRoute = DonateRouteImport.update({
+  id: '/donate',
+  path: '/donate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -39,43 +63,112 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/donate': typeof DonateRoute
+  '/exercise': typeof ExerciseRoute
+  '/fertility': typeof FertilityRoute
   '/onboarding': typeof OnboardingRoute
+  '/period': typeof PeriodRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/donate': typeof DonateRoute
+  '/exercise': typeof ExerciseRoute
+  '/fertility': typeof FertilityRoute
   '/onboarding': typeof OnboardingRoute
+  '/period': typeof PeriodRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/donate': typeof DonateRoute
+  '/exercise': typeof ExerciseRoute
+  '/fertility': typeof FertilityRoute
   '/onboarding': typeof OnboardingRoute
+  '/period': typeof PeriodRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/dashboard' | '/onboarding'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/donate'
+    | '/exercise'
+    | '/fertility'
+    | '/onboarding'
+    | '/period'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard' | '/onboarding'
-  id: '__root__' | '/' | '/auth' | '/dashboard' | '/onboarding'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/donate'
+    | '/exercise'
+    | '/fertility'
+    | '/onboarding'
+    | '/period'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/donate'
+    | '/exercise'
+    | '/fertility'
+    | '/onboarding'
+    | '/period'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   DashboardRoute: typeof DashboardRoute
+  DonateRoute: typeof DonateRoute
+  ExerciseRoute: typeof ExerciseRoute
+  FertilityRoute: typeof FertilityRoute
   OnboardingRoute: typeof OnboardingRoute
+  PeriodRoute: typeof PeriodRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/period': {
+      id: '/period'
+      path: '/period'
+      fullPath: '/period'
+      preLoaderRoute: typeof PeriodRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/onboarding': {
       id: '/onboarding'
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fertility': {
+      id: '/fertility'
+      path: '/fertility'
+      fullPath: '/fertility'
+      preLoaderRoute: typeof FertilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exercise': {
+      id: '/exercise'
+      path: '/exercise'
+      fullPath: '/exercise'
+      preLoaderRoute: typeof ExerciseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/donate': {
+      id: '/donate'
+      path: '/donate'
+      fullPath: '/donate'
+      preLoaderRoute: typeof DonateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -106,7 +199,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   DashboardRoute: DashboardRoute,
+  DonateRoute: DonateRoute,
+  ExerciseRoute: ExerciseRoute,
+  FertilityRoute: FertilityRoute,
   OnboardingRoute: OnboardingRoute,
+  PeriodRoute: PeriodRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

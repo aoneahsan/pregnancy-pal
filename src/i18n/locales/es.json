@@ -1,0 +1,51 @@
+{
+  "common": {
+    "appName": "PregnancyPal",
+    "tagline": "Tu salud, tus datos, tu viaje",
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Agregar",
+    "submit": "Enviar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "continue": "Continuar",
+    "finish": "Finalizar",
+    "close": "Cerrar",
+    "search": "Buscar",
+    "donate": "Donar",
+    "help": "Ayuda",
+    "about": "Acerca de",
+    "privacy": "Privacidad",
+    "terms": "Términos"
+  },
+  "landing": {
+    "hero": {
+      "title": "Tu Compañera de Embarazo",
+      "subtitle": "Una compañera cálida y cariñosa que proporciona orientación nutricional diaria personalizada y apoyo gentil durante tu hermoso viaje hacia la maternidad.",
+      "cta": "Comienza Tu Viaje",
+      "learnMore": "Aprende Más"
+    }
+  },
+  "dashboard": {
+    "welcome": "¡Bienvenida de nuevo, {{name}}!",
+    "weekStatus": "Estás en tu {{trimester}} trimestre, semana {{week}}",
+    "babyThisWeek": "Tu Bebé Esta Semana",
+    "tabs": {
+      "diet": "Plan de Dieta",
+      "tracking": "Seguimiento Diario",
+      "appointments": "Citas",
+      "period": "Seguimiento Menstrual",
+      "fertility": "Fertilidad",
+      "exercise": "Ejercicio",
+      "community": "Comunidad"
+    }
+  },
+  "donation": {
+    "title": "Apoya a PregnancyPal",
+    "subtitle": "Ayúdanos a mantener esta aplicación gratuita para todas",
+    "message": "PregnancyPal es completamente gratuita y siempre lo será. Creemos que toda mujer merece acceso a herramientas de seguimiento de embarazo y salud de calidad, independientemente de su situación financiera."
+  }
+}
