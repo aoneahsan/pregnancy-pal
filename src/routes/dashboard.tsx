@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
 import { useEffect } from 'react'
-import { Heart, Calendar, Apple, Baby, TrendingUp, Bell, Droplet, Clock, ChefHat, AlertTriangle, Activity, Users, Dumbbell, HeartHandshake } from 'lucide-react'
+import { Heart, Calendar, Apple, Baby, TrendingUp, Bell, Droplet, Activity, Users, Dumbbell, HeartHandshake } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { useAuthStore } from '@/stores/auth'
@@ -159,301 +159,130 @@ function DashboardPage() {
           </Card>
         )}
 
+        {/* Quick Action Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <Link to="/diet-plan">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardContent className="pt-6">
+                <div className="text-center">
+                  <Apple className="h-8 w-8 mx-auto mb-2 text-green-600" />
+                  <p className="font-medium">Diet Plan</p>
+                  <p className="text-xs text-gray-500">Today's meals</p>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+          
+          <Link to="/tracking">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardContent className="pt-6">
+                <div className="text-center">
+                  <Activity className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+                  <p className="font-medium">Daily Tracking</p>
+                  <p className="text-xs text-gray-500">Log symptoms</p>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+          
+          <Link to="/appointments">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardContent className="pt-6">
+                <div className="text-center">
+                  <Calendar className="h-8 w-8 mx-auto mb-2 text-purple-600" />
+                  <p className="font-medium">Appointments</p>
+                  <p className="text-xs text-gray-500">Schedule visits</p>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+          
+          <Link to="/period">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardContent className="pt-6">
+                <div className="text-center">
+                  <Droplet className="h-8 w-8 mx-auto mb-2 text-pink-600" />
+                  <p className="font-medium">Period Tracker</p>
+                  <p className="text-xs text-gray-500">Cycle tracking</p>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        </div>
+
         {/* Main Content Tabs */}
-        <Tabs defaultValue="diet" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
-            <TabsTrigger value="diet">Diet Plan</TabsTrigger>
-            <TabsTrigger value="tracking">Daily Tracking</TabsTrigger>
-            <TabsTrigger value="appointments">Appointments</TabsTrigger>
-            <TabsTrigger value="education">Learn</TabsTrigger>
-            <TabsTrigger value="period">Period</TabsTrigger>
+        <Tabs defaultValue="overview" className="space-y-4">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="fertility">Fertility</TabsTrigger>
             <TabsTrigger value="exercise">Exercise</TabsTrigger>
             <TabsTrigger value="community">Community</TabsTrigger>
+            <TabsTrigger value="education">Learn</TabsTrigger>
           </TabsList>
 
-          {/* Diet Plan Tab */}
-          <TabsContent value="diet" className="space-y-4">
-            {activePlan ? (
-              <>
+          {/* Overview Tab */}
+          <TabsContent value="overview" className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Today's Meal Preview */}
+              {activePlan && (
                 <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <span className="flex items-center">
-                        <Apple className="h-5 w-5 mr-2" />
-                        Today's Meal Plan
-                      </span>
-                      <Badge variant="outline">{activePlan.totalCalories} calories</Badge>
-                    </CardTitle>
-                    <CardDescription>
-                      {activePlan.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {activePlan.meals.map((meal) => (
-                      <Card key={meal.id} className="border-l-4 border-l-primary">
-                        <CardHeader className="pb-3">
-                          <div className="flex items-center justify-between">
-                            <CardTitle className="text-lg flex items-center">
-                              <Clock className="h-4 w-4 mr-2" />
-                              {meal.time} - {meal.name}
-                            </CardTitle>
-                            <Badge>{meal.type}</Badge>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-3">
-                            <div className="flex items-center justify-between text-sm">
-                              <span className="text-gray-600">Calories</span>
-                              <span className="font-medium">{meal.totalCalories}</span>
-                            </div>
-                            
-                            <div>
-                              <p className="text-sm font-medium mb-2">Instructions:</p>
-                              <ol className="list-decimal list-inside space-y-1">
-                                {meal.instructions.map((instruction, idx) => (
-                                  <li key={idx} className="text-sm text-gray-600">
-                                    {instruction}
-                                  </li>
-                                ))}
-                              </ol>
-                            </div>
-
-                            {meal.tips.length > 0 && (
-                              <div className="bg-pregnancy-pink-50 p-3 rounded-lg">
-                                <p className="text-sm font-medium mb-1">Tips:</p>
-                                <ul className="space-y-1">
-                                  {meal.tips.map((tip, idx) => (
-                                    <li key={idx} className="text-sm text-gray-600">
-                                      • {tip}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
-
-                            <div className="grid grid-cols-3 gap-2 text-xs">
-                              <div>
-                                <span className="text-gray-500">Protein:</span>
-                                <span className="ml-1 font-medium">{meal.nutrition.protein}g</span>
-                              </div>
-                              <div>
-                                <span className="text-gray-500">Carbs:</span>
-                                <span className="ml-1 font-medium">{meal.nutrition.carbohydrates}g</span>
-                              </div>
-                              <div>
-                                <span className="text-gray-500">Fat:</span>
-                                <span className="ml-1 font-medium">{meal.nutrition.fat}g</span>
-                              </div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </CardContent>
-                </Card>
-
-                {/* Nutrition Targets */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <TrendingUp className="h-5 w-5 mr-2" />
-                      Daily Nutrition Targets
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm flex items-center">
+                      <Apple className="h-4 w-4 mr-2" />
+                      Today's Meal Plan
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      <div>
-                        <p className="text-sm text-gray-600">Protein</p>
-                        <p className="font-medium">{activePlan.nutritionTargets.protein.min}-{activePlan.nutritionTargets.protein.max}g</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">Calcium</p>
-                        <p className="font-medium">{activePlan.nutritionTargets.calcium.min}-{activePlan.nutritionTargets.calcium.max}mg</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">Iron</p>
-                        <p className="font-medium">{activePlan.nutritionTargets.iron.min}-{activePlan.nutritionTargets.iron.max}mg</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">Folate</p>
-                        <p className="font-medium">{activePlan.nutritionTargets.folate.min}-{activePlan.nutritionTargets.folate.max}mcg</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">Fiber</p>
-                        <p className="font-medium">{activePlan.nutritionTargets.fiber.min}-{activePlan.nutritionTargets.fiber.max}g</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">Vitamin D</p>
-                        <p className="font-medium">{activePlan.nutritionTargets.vitaminD.min}-{activePlan.nutritionTargets.vitaminD.max}IU</p>
-                      </div>
-                    </div>
+                    <p className="text-xs text-gray-600 mb-2">Next meal: Lunch at 12:00 PM</p>
+                    <p className="text-2xl font-bold">{activePlan.totalCalories} cal</p>
+                    <Link to="/diet-plan">
+                      <Button size="sm" className="w-full mt-3">View Full Plan</Button>
+                    </Link>
                   </CardContent>
                 </Card>
-
-                {/* Hydration Reminder */}
-                <Card className="border-blue-200 bg-blue-50">
-                  <CardHeader>
-                    <CardTitle className="flex items-center text-blue-900">
-                      <Droplet className="h-5 w-5 mr-2" />
-                      Hydration Reminder
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-blue-800">
-                      Aim for at least 8-10 glasses of water today. Proper hydration is essential for:
-                    </p>
-                    <ul className="mt-2 space-y-1 text-sm text-blue-700">
-                      <li>• Maintaining amniotic fluid levels</li>
-                      <li>• Preventing constipation and UTIs</li>
-                      <li>• Supporting increased blood volume</li>
-                      <li>• Regulating body temperature</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                {/* Foods to Avoid */}
-                <Card className="border-red-200 bg-red-50">
-                  <CardHeader>
-                    <CardTitle className="flex items-center text-red-900">
-                      <AlertTriangle className="h-5 w-5 mr-2" />
-                      Foods to Avoid During Pregnancy
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <p className="font-medium text-red-800 mb-2">High-Risk Foods:</p>
-                        <ul className="space-y-1 text-sm text-red-700">
-                          <li>• Raw or undercooked meat</li>
-                          <li>• Raw fish and high-mercury fish</li>
-                          <li>• Raw eggs</li>
-                          <li>• Unpasteurized dairy products</li>
-                        </ul>
-                      </div>
-                      <div>
-                        <p className="font-medium text-red-800 mb-2">Limit Consumption:</p>
-                        <ul className="space-y-1 text-sm text-red-700">
-                          <li>• Caffeine (max 200mg/day)</li>
-                          <li>• Processed foods</li>
-                          <li>• High-sugar foods</li>
-                          <li>• Artificial sweeteners</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </>
-            ) : (
+              )}
+              
+              {/* Upcoming Appointment */}
               <Card>
-                <CardContent className="text-center py-8">
-                  <Apple className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-                  <p className="text-gray-600">No diet plan found. Please complete your profile setup.</p>
-                  <Button className="mt-4" onClick={() => navigate({ to: '/onboarding' })}>
-                    Complete Setup
-                  </Button>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm flex items-center">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Next Appointment
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-gray-600 mb-2">Regular Checkup</p>
+                  <p className="text-lg font-bold">In 3 days</p>
+                  <p className="text-sm text-gray-600">Dr. Sarah Johnson</p>
+                  <Link to="/appointments">
+                    <Button size="sm" className="w-full mt-3">View All</Button>
+                  </Link>
                 </CardContent>
               </Card>
-            )}
-          </TabsContent>
-
-          {/* Daily Tracking Tab */}
-          <TabsContent value="tracking">
-            <Card>
-              <CardHeader>
-                <CardTitle>Daily Tracking</CardTitle>
-                <CardDescription>Track your symptoms, mood, and wellness</CardDescription>
-              </CardHeader>
-              <CardContent className="text-center py-8">
-                <Calendar className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-                <p className="text-gray-600">Daily tracking feature coming soon!</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  You'll be able to track symptoms, mood, weight, and more.
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Appointments Tab */}
-          <TabsContent value="appointments">
-            <Card>
-              <CardHeader>
-                <CardTitle>Appointments</CardTitle>
-                <CardDescription>Manage your prenatal appointments</CardDescription>
-              </CardHeader>
-              <CardContent className="text-center py-8">
-                <Calendar className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-                <p className="text-gray-600">Appointment scheduling coming soon!</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  Track and manage all your prenatal appointments in one place.
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Education Tab */}
-          <TabsContent value="education">
-            <Card>
-              <CardHeader>
-                <CardTitle>Educational Resources</CardTitle>
-                <CardDescription>Learn about your pregnancy journey</CardDescription>
-              </CardHeader>
-              <CardContent className="text-center py-8">
-                <ChefHat className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-                <p className="text-gray-600">Educational content coming soon!</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  Articles, tips, and guidance for every stage of pregnancy.
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Period Tracker Tab */}
-          <TabsContent value="period">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span className="flex items-center">
-                    <Droplet className="h-5 w-5 mr-2 text-pink-500" />
-                    Period Tracker
-                  </span>
-                  <Link to="/period">
-                    <Button size="sm">Open Full Tracker</Button>
-                  </Link>
-                </CardTitle>
-                <CardDescription>Track your menstrual cycle and symptoms</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                  <Card className="bg-pink-50 border-pink-200">
-                    <CardContent className="pt-6">
-                      <div className="text-2xl font-bold text-pink-600">Day 14</div>
-                      <p className="text-sm text-gray-600">Current cycle day</p>
-                    </CardContent>
-                  </Card>
-                  <Card className="bg-purple-50 border-purple-200">
-                    <CardContent className="pt-6">
-                      <div className="text-2xl font-bold text-purple-600">28 days</div>
-                      <p className="text-sm text-gray-600">Average cycle length</p>
-                    </CardContent>
-                  </Card>
-                  <Card className="bg-blue-50 border-blue-200">
-                    <CardContent className="pt-6">
-                      <div className="text-2xl font-bold text-blue-600">5 days</div>
-                      <p className="text-sm text-gray-600">Next period in</p>
-                    </CardContent>
-                  </Card>
-                </div>
-                <Link to="/period">
-                  <Button className="w-full" variant="outline">
+              
+              {/* Today's Tracking */}
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm flex items-center">
                     <Activity className="h-4 w-4 mr-2" />
-                    Log Symptoms & Flow
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+                    Daily Check-in
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-gray-600 mb-2">Not logged today</p>
+                  <div className="flex gap-2 text-xs">
+                    <Badge variant="outline">Weight</Badge>
+                    <Badge variant="outline">Mood</Badge>
+                    <Badge variant="outline">Symptoms</Badge>
+                  </div>
+                  <Link to="/tracking">
+                    <Button size="sm" className="w-full mt-3">Log Now</Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
-
+          
           {/* Fertility Tab */}
           <TabsContent value="fertility">
             <Card>

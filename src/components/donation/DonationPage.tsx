@@ -227,7 +227,7 @@ export function DonationPage() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3">
-                  {t('donation.why.items', { returnObjects: true }).map((item: string, index: number) => (
+                  {(t('donation.why.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
                     <li key={index} className="flex items-start">
                       <Heart className="h-5 w-5 text-pink-500 mr-3 mt-0.5 flex-shrink-0" />
                       <span>{item}</span>

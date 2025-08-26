@@ -9,15 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TrackingRouteImport } from './routes/tracking'
 import { Route as PeriodRouteImport } from './routes/period'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as FertilityRouteImport } from './routes/fertility'
 import { Route as ExerciseRouteImport } from './routes/exercise'
 import { Route as DonateRouteImport } from './routes/donate'
+import { Route as DietPlanRouteImport } from './routes/diet-plan'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as CommunityRouteImport } from './routes/community'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AppointmentsRouteImport } from './routes/appointments'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TrackingRoute = TrackingRouteImport.update({
+  id: '/tracking',
+  path: '/tracking',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PeriodRoute = PeriodRouteImport.update({
   id: '/period',
   path: '/period',
@@ -43,14 +52,29 @@ const DonateRoute = DonateRouteImport.update({
   path: '/donate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DietPlanRoute = DietPlanRouteImport.update({
+  id: '/diet-plan',
+  path: '/diet-plan',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppointmentsRoute = AppointmentsRouteImport.update({
+  id: '/appointments',
+  path: '/appointments',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -61,81 +85,116 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/appointments': typeof AppointmentsRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/dashboard': typeof DashboardRoute
+  '/diet-plan': typeof DietPlanRoute
   '/donate': typeof DonateRoute
   '/exercise': typeof ExerciseRoute
   '/fertility': typeof FertilityRoute
   '/onboarding': typeof OnboardingRoute
   '/period': typeof PeriodRoute
+  '/tracking': typeof TrackingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/appointments': typeof AppointmentsRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/dashboard': typeof DashboardRoute
+  '/diet-plan': typeof DietPlanRoute
   '/donate': typeof DonateRoute
   '/exercise': typeof ExerciseRoute
   '/fertility': typeof FertilityRoute
   '/onboarding': typeof OnboardingRoute
   '/period': typeof PeriodRoute
+  '/tracking': typeof TrackingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/appointments': typeof AppointmentsRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/dashboard': typeof DashboardRoute
+  '/diet-plan': typeof DietPlanRoute
   '/donate': typeof DonateRoute
   '/exercise': typeof ExerciseRoute
   '/fertility': typeof FertilityRoute
   '/onboarding': typeof OnboardingRoute
   '/period': typeof PeriodRoute
+  '/tracking': typeof TrackingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/appointments'
     | '/auth'
+    | '/community'
     | '/dashboard'
+    | '/diet-plan'
     | '/donate'
     | '/exercise'
     | '/fertility'
     | '/onboarding'
     | '/period'
+    | '/tracking'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/appointments'
     | '/auth'
+    | '/community'
     | '/dashboard'
+    | '/diet-plan'
     | '/donate'
     | '/exercise'
     | '/fertility'
     | '/onboarding'
     | '/period'
+    | '/tracking'
   id:
     | '__root__'
     | '/'
+    | '/appointments'
     | '/auth'
+    | '/community'
     | '/dashboard'
+    | '/diet-plan'
     | '/donate'
     | '/exercise'
     | '/fertility'
     | '/onboarding'
     | '/period'
+    | '/tracking'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppointmentsRoute: typeof AppointmentsRoute
   AuthRoute: typeof AuthRoute
+  CommunityRoute: typeof CommunityRoute
   DashboardRoute: typeof DashboardRoute
+  DietPlanRoute: typeof DietPlanRoute
   DonateRoute: typeof DonateRoute
   ExerciseRoute: typeof ExerciseRoute
   FertilityRoute: typeof FertilityRoute
   OnboardingRoute: typeof OnboardingRoute
   PeriodRoute: typeof PeriodRoute
+  TrackingRoute: typeof TrackingRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tracking': {
+      id: '/tracking'
+      path: '/tracking'
+      fullPath: '/tracking'
+      preLoaderRoute: typeof TrackingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/period': {
       id: '/period'
       path: '/period'
@@ -171,6 +230,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DonateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/diet-plan': {
+      id: '/diet-plan'
+      path: '/diet-plan'
+      fullPath: '/diet-plan'
+      preLoaderRoute: typeof DietPlanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -178,11 +244,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/appointments': {
+      id: '/appointments'
+      path: '/appointments'
+      fullPath: '/appointments'
+      preLoaderRoute: typeof AppointmentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -197,13 +277,17 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppointmentsRoute: AppointmentsRoute,
   AuthRoute: AuthRoute,
+  CommunityRoute: CommunityRoute,
   DashboardRoute: DashboardRoute,
+  DietPlanRoute: DietPlanRoute,
   DonateRoute: DonateRoute,
   ExerciseRoute: ExerciseRoute,
   FertilityRoute: FertilityRoute,
   OnboardingRoute: OnboardingRoute,
   PeriodRoute: PeriodRoute,
+  TrackingRoute: TrackingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
