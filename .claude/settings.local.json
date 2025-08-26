@@ -571,7 +571,8 @@
       "Bash(git rm:*)",
       "Bash(git grep:*)",
       "Bash(git check-ignore:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(timeout 5 yarn dev:*)"
     ],
     "deny": []
   }

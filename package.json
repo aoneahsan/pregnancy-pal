@@ -132,6 +132,7 @@
   "devDependencies": {
     "@capacitor/cli": "^7.4.3",
     "@eslint/js": "^10.0.0",
+    "@tailwindcss/postcss": "^4.1.12",
     "@tanstack/router-devtools": "^1.131.27",
     "@tanstack/router-plugin": "^1.131.27",
     "@types/node": "^24.3.0",

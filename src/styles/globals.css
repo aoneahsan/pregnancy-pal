@@ -1,69 +1,149 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 333 71% 51%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 280 56% 90%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 21 90% 48%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 333 71% 51%;
-    --radius: 0.75rem;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 333 71% 51%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 280 56% 20%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 21 90% 48%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 333 71% 51%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
+@theme {
+  --color-border: hsl(214.3 31.8% 91.4%);
+  --color-input: hsl(214.3 31.8% 91.4%);
+  --color-ring: hsl(333 71% 51%);
+  --color-background: hsl(0 0% 100%);
+  --color-foreground: hsl(222.2 84% 4.9%);
   
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-display;
-  }
+  --color-primary: hsl(333 71% 51%);
+  --color-primary-foreground: hsl(210 40% 98%);
+  
+  --color-secondary: hsl(280 56% 90%);
+  --color-secondary-foreground: hsl(222.2 47.4% 11.2%);
+  
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: hsl(210 40% 98%);
+  
+  --color-muted: hsl(210 40% 96.1%);
+  --color-muted-foreground: hsl(215.4 16.3% 46.9%);
+  
+  --color-accent: hsl(21 90% 48%);
+  --color-accent-foreground: hsl(222.2 47.4% 11.2%);
+  
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(222.2 84% 4.9%);
+  
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(222.2 84% 4.9%);
+  
+  /* Pregnancy colors */
+  --color-pregnancy-pink-50: #fef1f7;
+  --color-pregnancy-pink-100: #fee5f2;
+  --color-pregnancy-pink-200: #fecce6;
+  --color-pregnancy-pink-300: #fea2d0;
+  --color-pregnancy-pink-400: #fc68b0;
+  --color-pregnancy-pink-500: #f63b91;
+  --color-pregnancy-pink-600: #e61e6f;
+  --color-pregnancy-pink-700: #c80f52;
+  --color-pregnancy-pink-800: #a61044;
+  --color-pregnancy-pink-900: #8b123a;
+  
+  --color-pregnancy-purple-50: #faf5ff;
+  --color-pregnancy-purple-100: #f3e8ff;
+  --color-pregnancy-purple-200: #e9d5ff;
+  --color-pregnancy-purple-300: #d8b4fe;
+  --color-pregnancy-purple-400: #c084fc;
+  --color-pregnancy-purple-500: #a855f7;
+  --color-pregnancy-purple-600: #9333ea;
+  --color-pregnancy-purple-700: #7e22ce;
+  --color-pregnancy-purple-800: #6b21a8;
+  --color-pregnancy-purple-900: #581c87;
+  
+  --color-pregnancy-peach-50: #fff7ed;
+  --color-pregnancy-peach-100: #ffedd5;
+  --color-pregnancy-peach-200: #fed7aa;
+  --color-pregnancy-peach-300: #fdba74;
+  --color-pregnancy-peach-400: #fb923c;
+  --color-pregnancy-peach-500: #f97316;
+  --color-pregnancy-peach-600: #ea580c;
+  --color-pregnancy-peach-700: #c2410c;
+  --color-pregnancy-peach-800: #9a3412;
+  --color-pregnancy-peach-900: #7c2d12;
+  
+  /* Border radius */
+  --radius-sm: calc(0.75rem - 4px);
+  --radius-md: calc(0.75rem - 2px);
+  --radius-lg: 0.75rem;
+  
+  /* Font families */
+  --font-family-sans: Inter var, system-ui, sans-serif;
+  --font-family-display: Lexend, system-ui, sans-serif;
+  
+  /* Animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-fade-out: fade-out 0.3s ease-out;
+  --animate-slide-in: slide-in 0.3s ease-out;
+  --animate-slide-out: slide-out 0.3s ease-out;
 }
 
+/* CSS Custom Properties for runtime theming */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 333 71% 51%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 280 56% 90%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 21 90% 48%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 333 71% 51%;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 333 71% 51%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 280 56% 20%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 21 90% 48%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 333 71% 51%;
+}
+
+/* Base styles */
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-feature-settings: "rlig" 1, "calt" 1;
+  font-family: var(--font-family-sans);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-display);
+}
+
+/* Custom utilities */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -80,4 +160,35 @@
   .animation-delay-6 {
     animation-delay: 0.6s;
   }
+}
+
+/* Keyframes */
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes slide-in {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slide-out {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
 }
