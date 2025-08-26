@@ -1,28 +1,57 @@
-# PregnancyPal - Your Pregnancy Companion
+# PregnancyPal 🤰
 
-A warm, nurturing pregnancy companion that provides personalized daily nutrition guidance and gentle support throughout your beautiful journey to motherhood.
+> A comprehensive, free women's health platform providing period tracking, pregnancy monitoring, nutrition planning, and wellness support - all in one place.
 
-## ✨ Features
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19-blue)](https://reactjs.org/)
+[![Firebase](https://img.shields.io/badge/Firebase-12-orange)](https://firebase.google.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-blue)](https://tailwindcss.com/)
 
-- **Personalized Nutrition Plans**: Custom meal plans based on your pregnancy stage and health needs
-- **Week-by-Week Tracking**: Monitor your pregnancy journey with detailed insights
-- **Baby Development**: Learn about your baby's growth at every stage
-- **Health Monitoring**: Track symptoms, mood, and overall wellness
-- **Expert Support**: Access evidence-based guidance from healthcare professionals
-- **Milestone Celebrations**: Celebrate important moments in your pregnancy
+## 🌟 Features
 
-## 🚀 Technology Stack
+### Current Features
+- 🔐 **Secure Authentication** - Firebase Auth with email/password
+- 🤰 **Pregnancy Tracking** - Week-by-week monitoring with due date calculations
+- 🥗 **Personalized Diet Plans** - Trimester-specific nutrition guidance
+- 📊 **Health Monitoring** - Track symptoms, mood, and wellness
+- 🚨 **Safety Alerts** - Foods to avoid and important warnings
+- 💧 **Hydration Reminders** - Daily water intake tracking
+- 📱 **Mobile-Ready** - Responsive design with Capacitor support
 
-- **Frontend**: React 18 with TypeScript
-- **Build Tool**: Vite
-- **Routing**: TanStack Router with URL state management
-- **Styling**: Tailwind CSS with custom pregnancy-themed design system
-- **UI Components**: Radix UI primitives
-- **State Management**: Zustand
-- **Forms**: React Hook Form with Zod validation
-- **Backend**: Firebase (Auth, Firestore, Storage)
-- **Storage**: Strata Storage for local/session/cookie storage
-- **Mobile**: Capacitor for cross-platform mobile apps
+### Coming Soon
+- 🩸 **Period Tracking** - Comprehensive menstrual cycle monitoring
+- 🥚 **Ovulation & Fertility** - Fertility window predictions and BBT tracking
+- 💪 **Exercise Programs** - Pregnancy-safe workouts
+- 👥 **Community Forums** - Connect with other mothers
+- 🤝 **Partner Integration** - Share journey with loved ones
+- 🧘 **Mental Wellness** - Meditation and stress management
+- 🏥 **Medical Integration** - Appointment scheduling and records
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React 19** - UI framework
+- **TypeScript 5.9** - Type safety
+- **Vite 7** - Build tool
+- **TanStack Router** - Routing with URL state
+- **Zustand** - State management
+- **Tailwind CSS v4** - Styling
+- **Radix UI** - Component primitives
+- **React Hook Form** - Form handling
+- **Zod** - Schema validation
+
+### Backend
+- **Firebase Auth** - Authentication
+- **Firestore** - NoSQL database
+- **Firebase Functions** - Serverless functions
+- **Firebase Hosting** - Web hosting
+- **Firebase Storage** - File storage
+
+### Mobile
+- **Capacitor** - Native app bridge
+- **iOS** - iPhone/iPad support
+- **Android** - Phone/tablet support
 
 ## 🛠️ Development Setup
 
@@ -56,7 +85,7 @@ Edit `.env` with your Firebase configuration.
 yarn dev
 ```
 
-The app will be available at `http://localhost:3000`
+The app will be available at `http://localhost:5601`
 
 ## 📱 Mobile Development
 
@@ -110,17 +139,37 @@ The app uses a custom pregnancy-themed design system with:
 - **Typography**: Inter for body text, Lexend for headings
 - **Components**: Built on Radix UI primitives with custom styling
 
+## 📚 Documentation
+
+- [User Guide](./docs/USER_GUIDE.md) - Complete user documentation
+- [Project Status](./docs/PROJECT_STATUS.md) - Current development status
+- [Feature Roadmap](./docs/FEATURE_ROADMAP.md) - Planned features and timeline
+- [Competitor Analysis](./docs/COMPETITOR_ANALYSIS.md) - Market research and analysis
+
 ## 🔧 Available Scripts
 
-- `yarn dev` - Start development server
-- `yarn build` - Build for production
-- `yarn preview` - Preview production build
-- `yarn typecheck` - Run TypeScript type checking
-- `yarn lint` - Run ESLint
-- `yarn format` - Format code with Prettier
-- `yarn cap:sync` - Sync web assets to native projects
-- `yarn cap:build:android` - Build for Android
-- `yarn cap:build:ios` - Build for iOS
+```bash
+# Development
+yarn dev              # Start dev server (port 5601)
+yarn build           # Build for production
+yarn preview         # Preview production build
+
+# Code Quality
+yarn lint            # Run ESLint
+yarn typecheck       # Check TypeScript
+yarn format          # Format with Prettier
+
+# Mobile
+yarn cap:sync        # Sync Capacitor
+yarn cap:run:ios     # Run on iOS
+yarn cap:run:android # Run on Android
+
+# Firebase
+firebase deploy      # Deploy all
+firebase deploy --only hosting    # Deploy hosting
+firebase deploy --only functions  # Deploy functions
+firebase deploy --only firestore  # Deploy rules/indexes
+```
 
 ## 🔒 Environment Variables
 
@@ -150,12 +199,22 @@ yarn build
 2. Test thoroughly on physical devices
 3. Follow app store submission guidelines
 
+## 🔒 Security
+
+- End-to-end encryption for sensitive data
+- Secure Firebase rules with user isolation
+- No data sharing with third parties
+- GDPR compliant data handling
+- User-controlled data export/deletion
+
 ## 🤝 Contributing
 
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
 ## 📄 License
@@ -164,17 +223,35 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Team
 
-- **Lead Developer**: [Ahsan Mahmood](https://aoneahsan.com) ([@aoneahsan](https://github.com/aoneahsan))
-- **Main Collaborator**: Darakhshan
+- **Ahsan Mahmood** - Lead Developer - [GitHub](https://github.com/aoneahsan)
+- **Darakhshan** - Main Collaborator
+
+## 📞 Contact
+
+- **Email**: support@pregnancypal.app
+- **Website**: https://pregnancypal.app
+- **GitHub Issues**: [Report bugs](https://github.com/aoneahsan/pregnancypal/issues)
+
+## 🚦 Status
+
+- **Current Version**: 1.0.0-alpha
+- **Status**: In Active Development
+- **Release Date**: Q4 2024 (planned)
+
+## 🎯 Mission
+
+To provide every woman worldwide with free, comprehensive, and scientifically-accurate health tracking tools, eliminating the need for multiple apps and premium subscriptions.
 
 ## 🙏 Acknowledgments
 
-- Design inspiration from modern pregnancy apps
-- Medical guidance from certified healthcare professionals
-- Open source community for amazing tools and libraries
+- [Firebase](https://firebase.google.com/) for backend infrastructure
+- [Radix UI](https://www.radix-ui.com/) for accessible components
+- [Tailwind CSS](https://tailwindcss.com/) for utility-first CSS
+- [Lucide Icons](https://lucide.dev/) for beautiful icons
+- All contributors and users
 
 ---
 
-**Package Identifier**: `com.aoneahsan.pregnancypal`
-**Version**: 1.0.0
-**Repository**: https://github.com/aoneahsan/pregnancypal
+**Made with ❤️ for women's health worldwide**
+
+*PregnancyPal - Your health, your data, your journey*
