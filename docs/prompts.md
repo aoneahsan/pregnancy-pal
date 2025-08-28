@@ -1,5 +1,7 @@
 ---------------------------------- 28-08-2025 -------------------------------------
 
+p5: When I add symptoms on this url: "http://localhost:5601/tracking?tab=symptoms" it should recommend some suitable diet or other reasonable actions required, some rest tips or anything important. please complete the functionality and let me know so that I can test it 
+
 p4: on this url: "http://localhost:5601/tracking" in daily tracking, when i click on vitals, symptoms, wellness option, the main url doesnot changes, please complete the functionality and let me know so that I can test it 
 
 

@@ -54,6 +54,251 @@ function TrackingPage() {
     concerning: ['Severe headache', 'Vision changes', 'Swelling', 'Bleeding', 'Severe cramping', 'Fever']
   }
 
+  // Symptom recommendations mapping
+  const symptomRecommendations: Record<string, {
+    diet: string[]
+    rest: string[]
+    actions: string[]
+    avoid: string[]
+  }> = {
+    'Nausea': {
+      diet: [
+        'Eat small, frequent meals instead of three large ones',
+        'Try ginger tea or ginger candies',
+        'Consume bland foods like crackers, toast, or rice',
+        'Stay hydrated with clear fluids between meals',
+        'Eat protein-rich snacks before bed'
+      ],
+      rest: [
+        'Get fresh air - open windows or take short walks',
+        'Rest in a well-ventilated room',
+        'Avoid strong smells that trigger nausea'
+      ],
+      actions: [
+        'Keep crackers by your bedside for morning sickness',
+        'Wear acupressure wristbands',
+        'Take prenatal vitamins with food'
+      ],
+      avoid: [
+        'Fatty, greasy, or spicy foods',
+        'Strong odors and perfumes',
+        'Lying down immediately after eating'
+      ]
+    },
+    'Fatigue': {
+      diet: [
+        'Increase iron-rich foods (lean meat, spinach, beans)',
+        'Eat complex carbohydrates for sustained energy',
+        'Include vitamin B12 sources (eggs, dairy, fortified cereals)',
+        'Stay well-hydrated throughout the day'
+      ],
+      rest: [
+        'Take 20-30 minute power naps when possible',
+        'Go to bed earlier than usual',
+        'Practice good sleep hygiene'
+      ],
+      actions: [
+        'Delegate tasks when possible',
+        'Light exercise like prenatal yoga',
+        'Check iron levels with your doctor'
+      ],
+      avoid: [
+        'Caffeine after 2 PM',
+        'Heavy meals before bedtime',
+        'Overexertion'
+      ]
+    },
+    'Headache': {
+      diet: [
+        'Stay consistently hydrated (10-12 glasses of water daily)',
+        'Maintain stable blood sugar with regular meals',
+        'Include magnesium-rich foods (nuts, seeds, whole grains)',
+        'Eat foods high in riboflavin (dairy, eggs, lean meats)'
+      ],
+      rest: [
+        'Rest in a dark, quiet room',
+        'Apply cold compress to head and neck',
+        'Practice relaxation techniques'
+      ],
+      actions: [
+        'Maintain good posture',
+        'Get regular gentle exercise',
+        'Try prenatal massage',
+        'Monitor blood pressure'
+      ],
+      avoid: [
+        'Trigger foods (chocolate, aged cheese, MSG)',
+        'Bright lights and loud noises',
+        'Dehydration',
+        'Skipping meals'
+      ]
+    },
+    'Back pain': {
+      diet: [
+        'Increase calcium intake (dairy, leafy greens)',
+        'Consume anti-inflammatory foods (fatty fish, berries)',
+        'Maintain adequate vitamin D levels',
+        'Stay hydrated to keep discs healthy'
+      ],
+      rest: [
+        'Sleep on your side with a pillow between knees',
+        'Use proper lumbar support when sitting',
+        'Take frequent breaks from standing'
+      ],
+      actions: [
+        'Practice prenatal yoga or swimming',
+        'Wear supportive shoes with low heels',
+        'Use a maternity support belt',
+        'Apply heat or ice packs'
+      ],
+      avoid: [
+        'High heels',
+        'Heavy lifting',
+        'Prolonged standing or sitting',
+        'Sleeping on your back after 20 weeks'
+      ]
+    },
+    'Heartburn': {
+      diet: [
+        'Eat smaller, more frequent meals',
+        'Choose low-acid foods (bananas, melons, oatmeal)',
+        'Drink milk or yogurt to neutralize acid',
+        'Chew food thoroughly and eat slowly'
+      ],
+      rest: [
+        'Sleep with head elevated on extra pillows',
+        'Wait 2-3 hours after eating before lying down',
+        'Sleep on your left side'
+      ],
+      actions: [
+        'Wear loose-fitting clothes',
+        'Take a short walk after meals',
+        'Try papaya enzyme supplements (with doctor approval)'
+      ],
+      avoid: [
+        'Spicy, fatty, or fried foods',
+        'Citrus fruits and tomatoes',
+        'Chocolate and caffeine',
+        'Large meals before bedtime'
+      ]
+    },
+    'Constipation': {
+      diet: [
+        'Increase fiber gradually (25-35g daily)',
+        'Eat prunes or drink prune juice',
+        'Include whole grains, fruits, and vegetables',
+        'Drink warm water with lemon in the morning',
+        'Add ground flaxseed to smoothies or yogurt'
+      ],
+      rest: [
+        'Establish a regular bathroom routine',
+        'Don\'t strain during bowel movements',
+        'Take time and don\'t rush'
+      ],
+      actions: [
+        'Exercise regularly (walking, swimming)',
+        'Try squatting position on toilet',
+        'Consider a fiber supplement (with doctor approval)',
+        'Massage abdomen gently in circular motions'
+      ],
+      avoid: [
+        'Processed foods',
+        'Excessive dairy',
+        'Iron supplements on empty stomach',
+        'Dehydration'
+      ]
+    },
+    'Severe headache': {
+      diet: ['Hydrate immediately', 'Eat if blood sugar might be low'],
+      rest: ['Lie down in a dark room immediately'],
+      actions: [
+        '⚠️ Contact your healthcare provider immediately',
+        'Check blood pressure if possible',
+        'Monitor for vision changes or swelling'
+      ],
+      avoid: ['Ignoring the symptom - could indicate preeclampsia']
+    },
+    'Vision changes': {
+      diet: ['Stay hydrated', 'Monitor salt intake'],
+      rest: ['Rest your eyes', 'Avoid screens'],
+      actions: [
+        '🚨 Call your doctor immediately',
+        'Check blood pressure',
+        'Note any other symptoms'
+      ],
+      avoid: ['Driving until cleared by doctor']
+    },
+    'Swelling': {
+      diet: [
+        'Reduce sodium intake',
+        'Increase water consumption',
+        'Eat potassium-rich foods (bananas, sweet potatoes)',
+        'Include natural diuretics (cucumber, watermelon)'
+      ],
+      rest: [
+        'Elevate feet above heart level when resting',
+        'Sleep on your left side',
+        'Take breaks from standing'
+      ],
+      actions: [
+        'Monitor for sudden or severe swelling',
+        'Wear compression stockings',
+        'Do ankle pumps and circles',
+        'Contact doctor if swelling is sudden or severe'
+      ],
+      avoid: [
+        'Standing for long periods',
+        'Tight clothing or jewelry',
+        'Excessive salt',
+        'Sitting with crossed legs'
+      ]
+    },
+    'Bleeding': {
+      diet: ['Stay hydrated'],
+      rest: ['Rest immediately', 'Lie down on your left side'],
+      actions: [
+        '🚨 EMERGENCY: Contact your doctor or go to ER immediately',
+        'Note amount and color of bleeding',
+        'Save any tissue that passes'
+      ],
+      avoid: ['Sexual activity until cleared by doctor', 'Heavy lifting']
+    },
+    'Severe cramping': {
+      diet: ['Stay hydrated', 'Maintain electrolyte balance'],
+      rest: ['Lie down immediately', 'Try different positions'],
+      actions: [
+        '🚨 Contact healthcare provider urgently',
+        'Time the cramps if regular',
+        'Monitor for other symptoms'
+      ],
+      avoid: ['Ignoring persistent or severe cramps']
+    },
+    'Fever': {
+      diet: [
+        'Increase fluid intake significantly',
+        'Eat vitamin C rich foods',
+        'Consume clear broths',
+        'Stay hydrated with electrolyte drinks'
+      ],
+      rest: [
+        'Rest as much as possible',
+        'Keep room cool',
+        'Use light bedding'
+      ],
+      actions: [
+        '⚠️ Contact doctor for fever over 100.4°F',
+        'Take acetaminophen if approved by doctor',
+        'Monitor temperature regularly',
+        'Use cool compresses'
+      ],
+      avoid: [
+        'Hot baths or saunas',
+        'Heavy blankets',
+        'Aspirin or ibuprofen unless approved'
+      ]
+    }
+  }
+
   const handleSaveDaily = () => {
     toast({
       title: 'Daily tracking saved',
@@ -280,6 +525,142 @@ function TrackingPage() {
                 )}
               </CardContent>
             </Card>
+            
+            {/* Symptom Recommendations */}
+            {selectedSymptoms.length > 0 && (
+              <div className="space-y-4">
+                <Card className="border-2 border-primary/20">
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center">
+                      <Heart className="h-5 w-5 mr-2 text-primary" />
+                      Personalized Recommendations
+                    </CardTitle>
+                    <CardDescription>
+                      Based on your selected symptoms, here are some helpful suggestions
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    {selectedSymptoms.map((symptom) => {
+                      const recommendations = symptomRecommendations[symptom]
+                      if (!recommendations) return null
+                      
+                      const isConcerning = symptoms.concerning.includes(symptom)
+                      
+                      return (
+                        <div key={symptom} className={`space-y-3 p-4 rounded-lg ${
+                          isConcerning ? 'bg-red-50 border border-red-200' : 'bg-green-50 border border-green-200'
+                        }`}>
+                          <h4 className={`font-semibold text-lg flex items-center ${
+                            isConcerning ? 'text-red-800' : 'text-green-800'
+                          }`}>
+                            {isConcerning && '⚠️ '}
+                            {symptom}
+                          </h4>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* Diet Recommendations */}
+                            {recommendations.diet && recommendations.diet.length > 0 && (
+                              <div className="bg-white p-3 rounded-lg">
+                                <h5 className="font-medium text-sm mb-2 flex items-center">
+                                  <Apple className="h-4 w-4 mr-1 text-green-600" />
+                                  Diet Suggestions
+                                </h5>
+                                <ul className="space-y-1 text-sm text-gray-700">
+                                  {recommendations.diet.map((tip, idx) => (
+                                    <li key={idx} className="flex items-start">
+                                      <span className="text-green-500 mr-1">•</span>
+                                      <span>{tip}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                            
+                            {/* Rest Tips */}
+                            {recommendations.rest && recommendations.rest.length > 0 && (
+                              <div className="bg-white p-3 rounded-lg">
+                                <h5 className="font-medium text-sm mb-2 flex items-center">
+                                  <Brain className="h-4 w-4 mr-1 text-blue-600" />
+                                  Rest & Recovery
+                                </h5>
+                                <ul className="space-y-1 text-sm text-gray-700">
+                                  {recommendations.rest.map((tip, idx) => (
+                                    <li key={idx} className="flex items-start">
+                                      <span className="text-blue-500 mr-1">•</span>
+                                      <span>{tip}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                            
+                            {/* Actions to Take */}
+                            {recommendations.actions && recommendations.actions.length > 0 && (
+                              <div className="bg-white p-3 rounded-lg">
+                                <h5 className="font-medium text-sm mb-2 flex items-center">
+                                  <Activity className="h-4 w-4 mr-1 text-purple-600" />
+                                  Recommended Actions
+                                </h5>
+                                <ul className="space-y-1 text-sm text-gray-700">
+                                  {recommendations.actions.map((action, idx) => (
+                                    <li key={idx} className="flex items-start">
+                                      <span className="text-purple-500 mr-1">•</span>
+                                      <span>{action}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                            
+                            {/* Things to Avoid */}
+                            {recommendations.avoid && recommendations.avoid.length > 0 && (
+                              <div className="bg-white p-3 rounded-lg">
+                                <h5 className="font-medium text-sm mb-2 flex items-center">
+                                  <AlertTriangle className="h-4 w-4 mr-1 text-orange-600" />
+                                  Things to Avoid
+                                </h5>
+                                <ul className="space-y-1 text-sm text-gray-700">
+                                  {recommendations.avoid.map((item, idx) => (
+                                    <li key={idx} className="flex items-start">
+                                      <span className="text-orange-500 mr-1">•</span>
+                                      <span>{item}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )
+                    })}
+                    
+                    {/* General Advice */}
+                    <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                      <p className="text-sm text-blue-800">
+                        <strong>Remember:</strong> These are general recommendations. Always consult with your healthcare provider 
+                        for personalized medical advice, especially if symptoms persist or worsen.
+                      </p>
+                    </div>
+                    
+                    {/* Quick Action Buttons */}
+                    <div className="flex flex-wrap gap-2">
+                      <Button variant="outline" size="sm">
+                        <Calendar className="h-4 w-4 mr-1" />
+                        Schedule Doctor Visit
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <Save className="h-4 w-4 mr-1" />
+                        Save Recommendations
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <Heart className="h-4 w-4 mr-1" />
+                        Contact Healthcare Provider
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
           </TabsContent>
 
           {/* Wellness Tab */}
