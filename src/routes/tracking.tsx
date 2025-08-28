@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate, useSearch } from '@tanstack/react-router'
-import { Heart, Calendar, Weight, Brain, Activity, ArrowLeft, Plus, Save } from 'lucide-react'
+import { Heart, Calendar, Weight, Brain, Activity, ArrowLeft, Plus, Save, Apple, AlertTriangle } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
