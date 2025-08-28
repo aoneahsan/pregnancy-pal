@@ -30,6 +30,23 @@ interface AuthState {
   initialize: () => void
 }
 
+const deserializeUserDates = (user: User | null): User | null => {
+  if (!user) return null
+  
+  return {
+    ...user,
+    createdAt: user.createdAt instanceof Date 
+      ? user.createdAt 
+      : new Date(user.createdAt),
+    updatedAt: user.updatedAt instanceof Date 
+      ? user.updatedAt 
+      : new Date(user.updatedAt),
+    dateOfBirth: user.dateOfBirth instanceof Date 
+      ? user.dateOfBirth 
+      : new Date(user.dateOfBirth),
+  }
+}
+
 const defaultPreferences: UserPreferences = {
   notifications: {
     dailyTips: true,
@@ -195,7 +212,7 @@ export const useAuthStore = create<AuthState>()(
           }
         },
 
-        setUser: (user) => set({ user }),
+        setUser: (user) => set({ user: deserializeUserDates(user) }),
         setFirebaseUser: (firebaseUser) => set({ firebaseUser }),
         setLoading: (isLoading) => set({ isLoading }),
         setInitialized: (isInitialized) => set({ isInitialized }),
@@ -281,6 +298,11 @@ export const useAuthStore = create<AuthState>()(
           // Only persist user data, not loading states
           user: state.user,
         }),
+        onRehydrateStorage: () => (state) => {
+          if (state && state.user) {
+            state.user = deserializeUserDates(state.user)
+          }
+        },
       }
     ),
     { name: 'auth-store' }

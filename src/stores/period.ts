@@ -12,6 +12,54 @@ import {
 } from '@/types/period'
 import { PeriodService } from '@/services/period.service'
 
+const deserializePeriodDates = (entry: PeriodEntry | null): PeriodEntry | null => {
+  if (!entry) return null
+  
+  return {
+    ...entry,
+    startDate: entry.startDate instanceof Date ? entry.startDate : new Date(entry.startDate),
+    endDate: entry.endDate ? (entry.endDate instanceof Date ? entry.endDate : new Date(entry.endDate)) : undefined,
+    createdAt: entry.createdAt instanceof Date ? entry.createdAt : new Date(entry.createdAt),
+    updatedAt: entry.updatedAt instanceof Date ? entry.updatedAt : new Date(entry.updatedAt),
+    symptoms: entry.symptoms.map(s => ({
+      ...s,
+      timestamp: s.timestamp instanceof Date ? s.timestamp : new Date(s.timestamp)
+    })),
+    mood: entry.mood.map(m => ({
+      ...m,
+      timestamp: m.timestamp instanceof Date ? m.timestamp : new Date(m.timestamp)
+    }))
+  }
+}
+
+const deserializeCycleDates = (cycle: CycleData | null): CycleData | null => {
+  if (!cycle) return null
+  
+  return {
+    ...cycle,
+    startDate: cycle.startDate instanceof Date ? cycle.startDate : new Date(cycle.startDate),
+    endDate: cycle.endDate ? (cycle.endDate instanceof Date ? cycle.endDate : new Date(cycle.endDate)) : undefined,
+    ovulationDate: cycle.ovulationDate ? (cycle.ovulationDate instanceof Date ? cycle.ovulationDate : new Date(cycle.ovulationDate)) : undefined,
+    fertileWindowStart: cycle.fertileWindowStart ? (cycle.fertileWindowStart instanceof Date ? cycle.fertileWindowStart : new Date(cycle.fertileWindowStart)) : undefined,
+    fertileWindowEnd: cycle.fertileWindowEnd ? (cycle.fertileWindowEnd instanceof Date ? cycle.fertileWindowEnd : new Date(cycle.fertileWindowEnd)) : undefined,
+    createdAt: cycle.createdAt instanceof Date ? cycle.createdAt : new Date(cycle.createdAt),
+    updatedAt: cycle.updatedAt instanceof Date ? cycle.updatedAt : new Date(cycle.updatedAt)
+  }
+}
+
+const deserializePredictionDates = (prediction: CyclePrediction | null): CyclePrediction | null => {
+  if (!prediction) return null
+  
+  return {
+    ...prediction,
+    nextPeriodStart: prediction.nextPeriodStart instanceof Date ? prediction.nextPeriodStart : new Date(prediction.nextPeriodStart),
+    nextPeriodEnd: prediction.nextPeriodEnd instanceof Date ? prediction.nextPeriodEnd : new Date(prediction.nextPeriodEnd),
+    nextOvulation: prediction.nextOvulation instanceof Date ? prediction.nextOvulation : new Date(prediction.nextOvulation),
+    nextFertileStart: prediction.nextFertileStart instanceof Date ? prediction.nextFertileStart : new Date(prediction.nextFertileStart),
+    nextFertileEnd: prediction.nextFertileEnd instanceof Date ? prediction.nextFertileEnd : new Date(prediction.nextFertileEnd)
+  }
+}
+
 interface PeriodState {
   activePeriod: PeriodEntry | null
   periodHistory: PeriodEntry[]
@@ -287,7 +335,23 @@ export const usePeriodStore = create<PeriodState>()(
           periodHistory: state.periodHistory.slice(0, 3), // Only persist last 3 for performance
           currentCycle: state.currentCycle,
           predictions: state.predictions
-        })
+        }),
+        onRehydrateStorage: () => (state) => {
+          if (state) {
+            if (state.activePeriod) {
+              state.activePeriod = deserializePeriodDates(state.activePeriod)
+            }
+            if (state.periodHistory) {
+              state.periodHistory = state.periodHistory.map(p => deserializePeriodDates(p)!)
+            }
+            if (state.currentCycle) {
+              state.currentCycle = deserializeCycleDates(state.currentCycle)
+            }
+            if (state.predictions) {
+              state.predictions = deserializePredictionDates(state.predictions)
+            }
+          }
+        }
       }
     ),
     { name: 'period-store' }

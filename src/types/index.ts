@@ -255,3 +255,19 @@ export interface ErrorInfo {
   code?: string
   details?: unknown
 }
+
+export interface Notification {
+  id: string
+  userId: string
+  title: string
+  message: string
+  type: 'info' | 'success' | 'warning' | 'error' | 'reminder' | 'milestone'
+  category: 'appointment' | 'diet' | 'tracking' | 'milestone' | 'tip' | 'system'
+  isRead: boolean
+  isImportant: boolean
+  actionUrl?: string
+  actionText?: string
+  metadata?: Record<string, any>
+  createdAt: Date
+  readAt?: Date
+}

@@ -27,6 +27,26 @@ interface PregnancyProfileState {
   clearError: () => void
 }
 
+const deserializeDates = (profile: PregnancyProfile | null): PregnancyProfile | null => {
+  if (!profile) return null
+  
+  return {
+    ...profile,
+    lastMenstrualPeriod: profile.lastMenstrualPeriod instanceof Date 
+      ? profile.lastMenstrualPeriod 
+      : new Date(profile.lastMenstrualPeriod),
+    expectedDueDate: profile.expectedDueDate instanceof Date 
+      ? profile.expectedDueDate 
+      : new Date(profile.expectedDueDate),
+    createdAt: profile.createdAt instanceof Date 
+      ? profile.createdAt 
+      : new Date(profile.createdAt),
+    updatedAt: profile.updatedAt instanceof Date 
+      ? profile.updatedAt 
+      : new Date(profile.updatedAt),
+  }
+}
+
 export const usePregnancyProfileStore = create<PregnancyProfileState>()(
   devtools(
     persist(
@@ -62,7 +82,7 @@ export const usePregnancyProfileStore = create<PregnancyProfileState>()(
               healthConditions: data.healthConditions,
             })
 
-            set({ profile, isLoading: false })
+            set({ profile: deserializeDates(profile), isLoading: false })
             return profile
           } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Failed to create profile'
@@ -93,7 +113,7 @@ export const usePregnancyProfileStore = create<PregnancyProfileState>()(
               }
             }
             
-            set({ profile, isLoading: false })
+            set({ profile: deserializeDates(profile), isLoading: false })
           } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Failed to fetch profile'
             set({ error: errorMessage, isLoading: false })
@@ -146,7 +166,7 @@ export const usePregnancyProfileStore = create<PregnancyProfileState>()(
           }
         },
 
-        setProfile: (profile) => set({ profile }),
+        setProfile: (profile) => set({ profile: deserializeDates(profile) }),
         setLoading: (isLoading) => set({ isLoading }),
         setError: (error) => set({ error }),
         clearError: () => set({ error: null }),
@@ -156,6 +176,11 @@ export const usePregnancyProfileStore = create<PregnancyProfileState>()(
         partialize: (state) => ({
           profile: state.profile,
         }),
+        onRehydrateStorage: () => (state) => {
+          if (state && state.profile) {
+            state.profile = deserializeDates(state.profile)
+          }
+        },
       }
     ),
     { name: 'pregnancy-profile-store' }

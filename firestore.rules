@@ -44,6 +44,30 @@ service cloud.firestore {
         request.auth.uid == resource.data.userId;
     }
     
+    // Tracking collection (new) - users can only access their own
+    match /tracking/{trackingId} {
+      allow read: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.userId;
+      allow update: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+      allow delete: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
+    // Exercise sessions - users can only access their own
+    match /exercise_sessions/{sessionId} {
+      allow read: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.userId;
+      allow update: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+      allow delete: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
     // Appointments - users can only access their own
     match /appointments/{appointmentId} {
       allow read: if request.auth != null && 

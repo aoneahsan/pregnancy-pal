@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
 import { useEffect } from 'react'
-import { Heart, Calendar, Apple, Baby, TrendingUp, Bell, Droplet, Activity, Users, Dumbbell, HeartHandshake } from 'lucide-react'
+import { Heart, Calendar, Apple, Baby, TrendingUp, Droplet, Activity, Users, Dumbbell, HeartHandshake } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { useAuthStore } from '@/stores/auth'
@@ -9,6 +9,8 @@ import { useDietPlanStore } from '@/stores/diet-plan'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
+import { NotificationPanel } from '@/components/notifications/NotificationPanel'
+import { useNotificationStore } from '@/stores/notifications'
 
 export const Route = createFileRoute('/dashboard')({
   component: DashboardPage,
@@ -19,11 +21,17 @@ function DashboardPage() {
   const { user, signOut } = useAuthStore()
   const { profile, fetchProfile } = usePregnancyProfileStore()
   const { activePlan, fetchActivePlan } = useDietPlanStore()
+  const { generateSampleNotifications, notifications } = useNotificationStore()
 
   useEffect(() => {
     if (user?.id) {
       fetchProfile(user.id)
       fetchActivePlan(user.id)
+      
+      // Generate sample notifications on first load if none exist
+      if (notifications.length === 0) {
+        generateSampleNotifications(user.id)
+      }
     }
   }, [user?.id, fetchProfile, fetchActivePlan])
 
@@ -82,7 +90,7 @@ function DashboardPage() {
                   Donate
                 </Button>
               </Link>
-              <Bell className="h-6 w-6 text-gray-600 cursor-pointer hover:text-gray-900" />
+              <NotificationPanel />
               <div className="flex items-center space-x-2">
                 <div className="text-right">
                   <p className="text-sm font-medium">{user?.name}</p>
@@ -414,6 +422,282 @@ function DashboardPage() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Education/Learn Tab */}
+          <TabsContent value="education">
+            <div className="space-y-6">
+              {/* Featured Content */}
+              <Card className="bg-gradient-to-r from-blue-50 to-purple-50">
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <TrendingUp className="h-5 w-5 mr-2 text-blue-600" />
+                    Featured This Week
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-white p-4 rounded-lg shadow-sm">
+                      <h4 className="font-semibold mb-2">Understanding Your Baby's Movements</h4>
+                      <p className="text-sm text-gray-600 mb-3">Learn what's normal and when to contact your doctor</p>
+                      <Button size="sm" variant="outline">Read Article</Button>
+                    </div>
+                    <div className="bg-white p-4 rounded-lg shadow-sm">
+                      <h4 className="font-semibold mb-2">Preparing Your Birth Plan</h4>
+                      <p className="text-sm text-gray-600 mb-3">Create a comprehensive plan for your delivery day</p>
+                      <Button size="sm" variant="outline">Download Template</Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Educational Categories */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {/* Pregnancy Stages */}
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="text-lg">📚 Pregnancy Stages</CardTitle>
+                    <CardDescription>Week-by-week development guide</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">First Trimester (Weeks 1-12)</p>
+                        <p className="text-xs text-gray-500">Early symptoms, development milestones</p>
+                      </div>
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Second Trimester (Weeks 13-27)</p>
+                        <p className="text-xs text-gray-500">Baby movements, anatomy scan</p>
+                      </div>
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Third Trimester (Weeks 28-40)</p>
+                        <p className="text-xs text-gray-500">Final preparations, signs of labor</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Nutrition & Health */}
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="text-lg">🥗 Nutrition & Health</CardTitle>
+                    <CardDescription>Eating right for you and baby</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Essential Nutrients</p>
+                        <p className="text-xs text-gray-500">Folic acid, iron, calcium guide</p>
+                      </div>
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Foods to Avoid</p>
+                        <p className="text-xs text-gray-500">Safe eating during pregnancy</p>
+                      </div>
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Managing Morning Sickness</p>
+                        <p className="text-xs text-gray-500">Tips and remedies</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Baby Development */}
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="text-lg">👶 Baby Development</CardTitle>
+                    <CardDescription>How your baby grows</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Organ Development</p>
+                        <p className="text-xs text-gray-500">When major organs form</p>
+                      </div>
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Brain Development</p>
+                        <p className="text-xs text-gray-500">Neural growth stages</p>
+                      </div>
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Sensory Development</p>
+                        <p className="text-xs text-gray-500">Hearing, sight, and touch</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Labor & Delivery */}
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="text-lg">🏥 Labor & Delivery</CardTitle>
+                    <CardDescription>Preparing for the big day</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Signs of Labor</p>
+                        <p className="text-xs text-gray-500">Know when it's time</p>
+                      </div>
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Pain Management</p>
+                        <p className="text-xs text-gray-500">Options and techniques</p>
+                      </div>
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">C-Section Guide</p>
+                        <p className="text-xs text-gray-500">What to expect</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Postpartum Care */}
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="text-lg">🤱 Postpartum Care</CardTitle>
+                    <CardDescription>After baby arrives</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Recovery Timeline</p>
+                        <p className="text-xs text-gray-500">What to expect week by week</p>
+                      </div>
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Breastfeeding Basics</p>
+                        <p className="text-xs text-gray-500">Tips for success</p>
+                      </div>
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Mental Health</p>
+                        <p className="text-xs text-gray-500">Recognizing PPD signs</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Common Concerns */}
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="text-lg">❓ Common Concerns</CardTitle>
+                    <CardDescription>Answers to frequent questions</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Is This Normal?</p>
+                        <p className="text-xs text-gray-500">Common symptoms explained</p>
+                      </div>
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">When to Call Doctor</p>
+                        <p className="text-xs text-gray-500">Warning signs checklist</p>
+                      </div>
+                      <div className="p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <p className="font-medium text-sm">Safe Medications</p>
+                        <p className="text-xs text-gray-500">What's safe during pregnancy</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Interactive Tools */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>🛠️ Interactive Learning Tools</CardTitle>
+                  <CardDescription>Calculators, quizzes, and more</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <Button variant="outline" className="h-auto py-4 flex-col">
+                      <span className="text-2xl mb-1">📊</span>
+                      <span className="text-sm">Due Date Calculator</span>
+                    </Button>
+                    <Button variant="outline" className="h-auto py-4 flex-col">
+                      <span className="text-2xl mb-1">📏</span>
+                      <span className="text-sm">Weight Gain Tracker</span>
+                    </Button>
+                    <Button variant="outline" className="h-auto py-4 flex-col">
+                      <span className="text-2xl mb-1">👟</span>
+                      <span className="text-sm">Kick Counter</span>
+                    </Button>
+                    <Button variant="outline" className="h-auto py-4 flex-col">
+                      <span className="text-2xl mb-1">📝</span>
+                      <span className="text-sm">Birth Plan Builder</span>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Video Resources */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>🎥 Video Library</CardTitle>
+                  <CardDescription>Visual guides and tutorials</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="bg-gray-100 rounded-lg p-4">
+                      <div className="bg-gray-200 h-32 rounded mb-3 flex items-center justify-center">
+                        <span className="text-4xl">▶️</span>
+                      </div>
+                      <h4 className="font-medium text-sm">Prenatal Yoga Session</h4>
+                      <p className="text-xs text-gray-500">20 min • Beginner friendly</p>
+                    </div>
+                    <div className="bg-gray-100 rounded-lg p-4">
+                      <div className="bg-gray-200 h-32 rounded mb-3 flex items-center justify-center">
+                        <span className="text-4xl">▶️</span>
+                      </div>
+                      <h4 className="font-medium text-sm">Breathing Techniques</h4>
+                      <p className="text-xs text-gray-500">15 min • Labor preparation</p>
+                    </div>
+                    <div className="bg-gray-100 rounded-lg p-4">
+                      <div className="bg-gray-200 h-32 rounded mb-3 flex items-center justify-center">
+                        <span className="text-4xl">▶️</span>
+                      </div>
+                      <h4 className="font-medium text-sm">Newborn Care Basics</h4>
+                      <p className="text-xs text-gray-500">25 min • Essential skills</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Quick Tips */}
+              <Card className="bg-yellow-50">
+                <CardHeader>
+                  <CardTitle className="text-lg">💡 Quick Tips for Week {profile?.currentWeek || 1}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="flex items-start space-x-2">
+                      <span className="text-green-600 mt-1">✓</span>
+                      <div>
+                        <p className="font-medium text-sm">Stay Hydrated</p>
+                        <p className="text-xs text-gray-600">Aim for 8-10 glasses of water daily</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-2">
+                      <span className="text-green-600 mt-1">✓</span>
+                      <div>
+                        <p className="font-medium text-sm">Sleep Position</p>
+                        <p className="text-xs text-gray-600">Sleep on your left side for better blood flow</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-2">
+                      <span className="text-green-600 mt-1">✓</span>
+                      <div>
+                        <p className="font-medium text-sm">Gentle Exercise</p>
+                        <p className="text-xs text-gray-600">30 minutes of walking daily is beneficial</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-2">
+                      <span className="text-green-600 mt-1">✓</span>
+                      <div>
+                        <p className="font-medium text-sm">Prenatal Vitamins</p>
+                        <p className="text-xs text-gray-600">Take them with food to avoid nausea</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
