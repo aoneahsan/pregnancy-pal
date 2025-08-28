@@ -1,13 +1,33 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { Apple, Heart, Clock, AlertTriangle, Droplet, TrendingUp, ArrowLeft } from 'lucide-react'
+import { Apple, Heart, Clock, AlertTriangle, Droplet, TrendingUp, ArrowLeft, Settings } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useDietPlanStore } from '@/stores/diet-plan'
 import { useAuthStore } from '@/stores/auth'
 import { usePregnancyProfileStore } from '@/stores/pregnancy-profile'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import { Checkbox } from '@/components/ui/checkbox'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
+import { useToast } from '@/hooks/use-toast'
+import { DietaryRestriction } from '@/types'
 
 export const Route = createFileRoute('/diet-plan')({
   component: DietPlanPage,
@@ -15,15 +35,93 @@ export const Route = createFileRoute('/diet-plan')({
 
 function DietPlanPage() {
   const { t } = useTranslation()
+  const { toast } = useToast()
   const { user } = useAuthStore()
-  const { profile } = usePregnancyProfileStore()
-  const { activePlan, fetchActivePlan } = useDietPlanStore()
+  const { profile, updateProfile } = usePregnancyProfileStore()
+  const { activePlan, fetchActivePlan, generatePlan } = useDietPlanStore()
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false)
+  
+  // Form state for diet preferences
+  const [dietaryRestrictions, setDietaryRestrictions] = useState<DietaryRestriction[]>([])
+  const [allergies, setAllergies] = useState<string>('')
+  const [mealPreferences, setMealPreferences] = useState({
+    breakfast: true,
+    lunch: true,
+    dinner: true,
+    snacks: true
+  })
+  const [calorieTarget, setCalorieTarget] = useState<string>('2200')
+  const [additionalNotes, setAdditionalNotes] = useState<string>('')
 
   useEffect(() => {
     if (user?.id) {
       fetchActivePlan(user.id)
     }
   }, [user?.id, fetchActivePlan])
+  
+  useEffect(() => {
+    // Initialize form with existing preferences
+    if (profile?.dietaryRestrictions) {
+      setDietaryRestrictions(profile.dietaryRestrictions)
+    }
+    if (profile?.allergies) {
+      setAllergies(profile.allergies.join(', '))
+    }
+  }, [profile])
+  
+  const handleSavePreferences = async () => {
+    if (!profile || !user) return
+    
+    setIsUpdating(true)
+    try {
+      // Parse allergies string into array
+      const allergiesArray = allergies
+        .split(',')
+        .map(a => a.trim())
+        .filter(a => a.length > 0)
+      
+      // Update profile with new preferences
+      await updateProfile(user.id, {
+        dietaryRestrictions,
+        allergies: allergiesArray,
+      })
+      
+      // Regenerate diet plan with new preferences
+      if (profile) {
+        await generatePlan(
+          { ...profile, dietaryRestrictions, allergies: allergiesArray },
+          dietaryRestrictions
+        )
+      }
+      
+      toast({
+        title: 'Preferences Updated',
+        description: 'Your diet preferences have been saved and your meal plan has been updated.',
+      })
+      
+      setIsEditDialogOpen(false)
+      
+      // Refresh the active plan
+      await fetchActivePlan(user.id)
+    } catch (error) {
+      toast({
+        title: 'Update Failed',
+        description: 'Could not update your preferences. Please try again.',
+        variant: 'destructive'
+      })
+    } finally {
+      setIsUpdating(false)
+    }
+  }
+  
+  const toggleRestriction = (restriction: DietaryRestriction) => {
+    setDietaryRestrictions(prev => 
+      prev.includes(restriction)
+        ? prev.filter(r => r !== restriction)
+        : [...prev, restriction]
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pregnancy-pink-50 via-white to-pregnancy-purple-50">
@@ -44,6 +142,135 @@ function DietPlanPage() {
               <h1 className="text-2xl font-bold">Diet Plan</h1>
             </div>
             <div className="flex items-center space-x-2">
+              <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Settings className="h-4 w-4 mr-2" />
+                    Edit Preferences
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Edit Diet Preferences</DialogTitle>
+                    <DialogDescription>
+                      Update your dietary restrictions and preferences to customize your meal plan.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-6 mt-4">
+                    {/* Dietary Restrictions */}
+                    <div>
+                      <Label className="text-base font-semibold mb-3 block">Dietary Restrictions</Label>
+                      <div className="grid grid-cols-2 gap-3">
+                        {['vegetarian', 'vegan', 'gluten-free', 'dairy-free', 'nut-free', 'halal', 'kosher', 'low-sodium'].map((restriction) => (
+                          <div key={restriction} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={restriction}
+                              checked={dietaryRestrictions.includes(restriction as DietaryRestriction)}
+                              onCheckedChange={() => toggleRestriction(restriction as DietaryRestriction)}
+                            />
+                            <Label
+                              htmlFor={restriction}
+                              className="text-sm font-normal capitalize cursor-pointer"
+                            >
+                              {restriction.replace('-', ' ')}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Allergies */}
+                    <div>
+                      <Label htmlFor="allergies" className="text-base font-semibold mb-2 block">
+                        Allergies or Intolerances
+                      </Label>
+                      <Textarea
+                        id="allergies"
+                        placeholder="Enter allergies separated by commas (e.g., peanuts, shellfish, eggs)"
+                        value={allergies}
+                        onChange={(e) => setAllergies(e.target.value)}
+                        className="min-h-[80px]"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Separate multiple allergies with commas</p>
+                    </div>
+                    
+                    {/* Meal Preferences */}
+                    <div>
+                      <Label className="text-base font-semibold mb-3 block">Meal Preferences</Label>
+                      <div className="grid grid-cols-2 gap-3">
+                        {Object.entries(mealPreferences).map(([meal, enabled]) => (
+                          <div key={meal} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={meal}
+                              checked={enabled}
+                              onCheckedChange={(checked) => 
+                                setMealPreferences(prev => ({ ...prev, [meal]: checked as boolean }))
+                              }
+                            />
+                            <Label
+                              htmlFor={meal}
+                              className="text-sm font-normal capitalize cursor-pointer"
+                            >
+                              Include {meal}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Calorie Target */}
+                    <div>
+                      <Label htmlFor="calories" className="text-base font-semibold mb-2 block">
+                        Daily Calorie Target
+                      </Label>
+                      <Select value={calorieTarget} onValueChange={setCalorieTarget}>
+                        <SelectTrigger id="calories">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="1800">1800 calories (Light)</SelectItem>
+                          <SelectItem value="2000">2000 calories (Moderate)</SelectItem>
+                          <SelectItem value="2200">2200 calories (Standard)</SelectItem>
+                          <SelectItem value="2400">2400 calories (Active)</SelectItem>
+                          <SelectItem value="2600">2600 calories (Very Active)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-gray-500 mt-1">Recommended for pregnancy: 2200-2400 calories</p>
+                    </div>
+                    
+                    {/* Additional Notes */}
+                    <div>
+                      <Label htmlFor="notes" className="text-base font-semibold mb-2 block">
+                        Additional Notes or Preferences
+                      </Label>
+                      <Textarea
+                        id="notes"
+                        placeholder="Any other dietary preferences or notes (e.g., prefer organic, no spicy food)"
+                        value={additionalNotes}
+                        onChange={(e) => setAdditionalNotes(e.target.value)}
+                        className="min-h-[100px]"
+                      />
+                    </div>
+                    
+                    {/* Action Buttons */}
+                    <div className="flex justify-end space-x-3 pt-4 border-t">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setIsEditDialogOpen(false)}
+                        disabled={isUpdating}
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        onClick={handleSavePreferences}
+                        disabled={isUpdating}
+                      >
+                        {isUpdating ? 'Saving...' : 'Save Preferences'}
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
               <Badge variant="outline">Week {profile?.currentWeek || 0}</Badge>
             </div>
           </div>
