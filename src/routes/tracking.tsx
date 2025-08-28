@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate, useSearch } from '@tanstack/react-router'
 import { Heart, Calendar, Weight, Brain, Activity, ArrowLeft, Plus, Save } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Progress } from '@/components/ui/progress'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/stores/auth'
 import { usePregnancyProfileStore } from '@/stores/pregnancy-profile'
@@ -17,12 +17,20 @@ import { toast } from '@/hooks/use-toast'
 
 export const Route = createFileRoute('/tracking')({
   component: TrackingPage,
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      tab: (search.tab as string) || 'vitals'
+    }
+  }
 })
 
 function TrackingPage() {
   const { t } = useTranslation()
   const { user } = useAuthStore()
   const { profile } = usePregnancyProfileStore()
+  const navigate = useNavigate()
+  const search = useSearch({ from: '/tracking' })
+  const activeTab = search.tab || 'vitals'
   
   const [weight, setWeight] = useState('')
   const [bloodPressureSystolic, setBloodPressureSystolic] = useState('')
@@ -33,6 +41,13 @@ function TrackingPage() {
   const [waterGlasses, setWaterGlasses] = useState(0)
   const [kickCount, setKickCount] = useState('')
   const [notes, setNotes] = useState('')
+  
+  const handleTabChange = (value: string) => {
+    navigate({ 
+      to: '/tracking',
+      search: { tab: value }
+    })
+  }
 
   const symptoms = {
     common: ['Nausea', 'Fatigue', 'Headache', 'Back pain', 'Heartburn', 'Constipation'],
@@ -105,7 +120,7 @@ function TrackingPage() {
         </Card>
 
         {/* Main Tracking Tabs */}
-        <Tabs defaultValue="vitals" className="space-y-4">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="vitals">Vitals</TabsTrigger>
             <TabsTrigger value="symptoms">Symptoms</TabsTrigger>
