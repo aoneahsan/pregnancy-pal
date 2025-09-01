@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate, useSearch } from '@tanstack/react-router'
-import { Heart, Calendar, Weight, Brain, Activity, ArrowLeft, Plus, Save, Apple, AlertTriangle } from 'lucide-react'
+import { Heart, Calendar, Weight, Brain, Activity, ArrowLeft, Plus, Save, Apple, AlertTriangle, Phone, Download, CalendarCheck } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -14,6 +14,16 @@ import { useAuthStore } from '@/stores/auth'
 import { usePregnancyProfileStore } from '@/stores/pregnancy-profile'
 import { format } from 'date-fns'
 import { toast } from '@/hooks/use-toast'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
 
 export const Route = createFileRoute('/tracking')({
   component: TrackingPage,
@@ -41,6 +51,16 @@ function TrackingPage() {
   const [waterGlasses, setWaterGlasses] = useState(0)
   const [kickCount, setKickCount] = useState('')
   const [notes, setNotes] = useState('')
+  
+  // Dialog states
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false)
+  const [contactDialogOpen, setContactDialogOpen] = useState(false)
+  const [appointmentDate, setAppointmentDate] = useState('')
+  const [appointmentTime, setAppointmentTime] = useState('')
+  const [appointmentReason, setAppointmentReason] = useState('')
+  const [contactMethod, setContactMethod] = useState('')
+  const [contactMessage, setContactMessage] = useState('')
+  const [urgencyLevel, setUrgencyLevel] = useState('normal')
   
   const handleTabChange = (value: string) => {
     navigate({ 
@@ -304,6 +324,194 @@ function TrackingPage() {
       title: 'Daily tracking saved',
       description: 'Your health data has been recorded successfully.'
     })
+  }
+
+  const handleScheduleDoctor = () => {
+    setScheduleDialogOpen(true)
+    // Pre-fill reason with selected symptoms
+    if (selectedSymptoms.length > 0) {
+      setAppointmentReason(`Experiencing symptoms: ${selectedSymptoms.join(', ')}`)
+    }
+  }
+
+  const confirmScheduleAppointment = () => {
+    if (!appointmentDate || !appointmentTime) {
+      toast({
+        title: 'Missing Information',
+        description: 'Please select both date and time for the appointment.',
+        variant: 'destructive'
+      })
+      return
+    }
+
+    // Here you would typically send this to your backend
+    const appointmentData = {
+      date: appointmentDate,
+      time: appointmentTime,
+      reason: appointmentReason,
+      symptoms: selectedSymptoms,
+      urgency: selectedSymptoms.some(s => symptoms.concerning.includes(s)) ? 'high' : 'normal'
+    }
+
+    console.log('Scheduling appointment:', appointmentData)
+    
+    toast({
+      title: 'Appointment Scheduled',
+      description: `Your appointment has been scheduled for ${appointmentDate} at ${appointmentTime}. You will receive a confirmation email shortly.`
+    })
+    
+    setScheduleDialogOpen(false)
+    // Reset form
+    setAppointmentDate('')
+    setAppointmentTime('')
+    setAppointmentReason('')
+  }
+
+  const handleSaveRecommendations = () => {
+    if (selectedSymptoms.length === 0) {
+      toast({
+        title: 'No symptoms selected',
+        description: 'Please select symptoms first to save recommendations.',
+        variant: 'destructive'
+      })
+      return
+    }
+
+    // Create recommendations document
+    const recommendationsDoc = {
+      date: new Date().toISOString(),
+      symptoms: selectedSymptoms,
+      recommendations: selectedSymptoms.map(symptom => ({
+        symptom,
+        ...symptomRecommendations[symptom]
+      })),
+      week: profile?.currentWeek || 0
+    }
+
+    // Convert to downloadable format
+    const recommendationsText = `
+Pregnancy Health Recommendations
+Date: ${format(new Date(), 'MMMM d, yyyy')}
+Week: ${profile?.currentWeek || 0}
+
+${
+      selectedSymptoms.map(symptom => {
+        const rec = symptomRecommendations[symptom]
+        if (!rec) return ''
+        return `
+${symptom.toUpperCase()}
+${'='.repeat(symptom.length)}
+
+Diet Suggestions:
+${rec.diet?.map(d => `• ${d}`).join('\n') || 'None'}
+
+Rest & Recovery:
+${rec.rest?.map(r => `• ${r}`).join('\n') || 'None'}
+
+Recommended Actions:
+${rec.actions?.map(a => `• ${a}`).join('\n') || 'None'}
+
+Things to Avoid:
+${rec.avoid?.map(a => `• ${a}`).join('\n') || 'None'}
+`
+      }).join('\n')
+    }
+
+IMPORTANT: Always consult with your healthcare provider for personalized medical advice.`
+
+    // Create and download file
+    const blob = new Blob([recommendationsText], { type: 'text/plain' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `pregnancy-recommendations-${format(new Date(), 'yyyy-MM-dd')}.txt`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    window.URL.revokeObjectURL(url)
+
+    // Also save to localStorage for future reference
+    const savedRecommendations = JSON.parse(localStorage.getItem('savedRecommendations') || '[]')
+    savedRecommendations.push(recommendationsDoc)
+    localStorage.setItem('savedRecommendations', JSON.stringify(savedRecommendations))
+
+    toast({
+      title: 'Recommendations Saved',
+      description: 'Your personalized recommendations have been saved and downloaded.'
+    })
+  }
+
+  const handleContactProvider = () => {
+    setContactDialogOpen(true)
+    // Pre-fill message with concerning symptoms
+    const concerningSelected = selectedSymptoms.filter(s => symptoms.concerning.includes(s))
+    if (concerningSelected.length > 0) {
+      setContactMessage(`I am experiencing the following concerning symptoms: ${concerningSelected.join(', ')}. I would like to discuss these with my healthcare provider.`)
+      setUrgencyLevel('urgent')
+    } else if (selectedSymptoms.length > 0) {
+      setContactMessage(`I am experiencing: ${selectedSymptoms.join(', ')}. I would like to discuss management options.`)
+      setUrgencyLevel('normal')
+    }
+  }
+
+  const confirmContactProvider = () => {
+    if (!contactMethod || !contactMessage) {
+      toast({
+        title: 'Missing Information',
+        description: 'Please select a contact method and enter a message.',
+        variant: 'destructive'
+      })
+      return
+    }
+
+    // Here you would typically send this to your backend
+    const contactData = {
+      method: contactMethod,
+      message: contactMessage,
+      urgency: urgencyLevel,
+      symptoms: selectedSymptoms,
+      week: profile?.currentWeek || 0,
+      timestamp: new Date().toISOString()
+    }
+
+    console.log('Contacting provider:', contactData)
+
+    // Simulate different contact methods
+    switch (contactMethod) {
+      case 'phone':
+        toast({
+          title: 'Call Request Sent',
+          description: 'Your healthcare provider will call you within 2-4 hours. Emergency? Call 911.'
+        })
+        break
+      case 'email':
+        toast({
+          title: 'Email Sent',
+          description: 'Your message has been sent. Expect a response within 24-48 hours.'
+        })
+        break
+      case 'portal':
+        toast({
+          title: 'Message Sent via Patient Portal',
+          description: 'Your provider will respond through the patient portal within 24 hours.'
+        })
+        break
+      case 'emergency':
+        toast({
+          title: 'Emergency Contact',
+          description: 'Please call 911 or go to the nearest emergency room immediately.',
+          variant: 'destructive'
+        })
+        // Could also trigger a phone call here
+        window.location.href = 'tel:911'
+        break
+    }
+
+    setContactDialogOpen(false)
+    // Reset form
+    setContactMethod('')
+    setContactMessage('')
+    setUrgencyLevel('normal')
   }
 
   const getMoodEmoji = (level: number) => {
@@ -644,16 +852,35 @@ function TrackingPage() {
                     
                     {/* Quick Action Buttons */}
                     <div className="flex flex-wrap gap-2">
-                      <Button variant="outline" size="sm">
-                        <Calendar className="h-4 w-4 mr-1" />
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={handleScheduleDoctor}
+                        className="hover:bg-primary/10"
+                      >
+                        <CalendarCheck className="h-4 w-4 mr-1" />
                         Schedule Doctor Visit
                       </Button>
-                      <Button variant="outline" size="sm">
-                        <Save className="h-4 w-4 mr-1" />
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={handleSaveRecommendations}
+                        className="hover:bg-green-50"
+                      >
+                        <Download className="h-4 w-4 mr-1" />
                         Save Recommendations
                       </Button>
-                      <Button variant="outline" size="sm">
-                        <Heart className="h-4 w-4 mr-1" />
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={handleContactProvider}
+                        className={`hover:bg-red-50 ${
+                          selectedSymptoms.some(s => symptoms.concerning.includes(s)) 
+                            ? 'border-red-500 text-red-600' 
+                            : ''
+                        }`}
+                      >
+                        <Phone className="h-4 w-4 mr-1" />
                         Contact Healthcare Provider
                       </Button>
                     </div>
@@ -810,6 +1037,177 @@ function TrackingPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Schedule Appointment Dialog */}
+      <Dialog open={scheduleDialogOpen} onOpenChange={setScheduleDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center">
+              <CalendarCheck className="h-5 w-5 mr-2 text-primary" />
+              Schedule Doctor Visit
+            </DialogTitle>
+            <DialogDescription>
+              Book an appointment with your healthcare provider
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="appointment-date">Preferred Date</Label>
+              <Input
+                id="appointment-date"
+                type="date"
+                value={appointmentDate}
+                onChange={(e) => setAppointmentDate(e.target.value)}
+                min={format(new Date(), 'yyyy-MM-dd')}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="appointment-time">Preferred Time</Label>
+              <Select value={appointmentTime} onValueChange={setAppointmentTime}>
+                <SelectTrigger id="appointment-time">
+                  <SelectValue placeholder="Select a time" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="09:00">9:00 AM</SelectItem>
+                  <SelectItem value="09:30">9:30 AM</SelectItem>
+                  <SelectItem value="10:00">10:00 AM</SelectItem>
+                  <SelectItem value="10:30">10:30 AM</SelectItem>
+                  <SelectItem value="11:00">11:00 AM</SelectItem>
+                  <SelectItem value="11:30">11:30 AM</SelectItem>
+                  <SelectItem value="14:00">2:00 PM</SelectItem>
+                  <SelectItem value="14:30">2:30 PM</SelectItem>
+                  <SelectItem value="15:00">3:00 PM</SelectItem>
+                  <SelectItem value="15:30">3:30 PM</SelectItem>
+                  <SelectItem value="16:00">4:00 PM</SelectItem>
+                  <SelectItem value="16:30">4:30 PM</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="appointment-reason">Reason for Visit</Label>
+              <Textarea
+                id="appointment-reason"
+                placeholder="Describe your symptoms or reason for the visit"
+                value={appointmentReason}
+                onChange={(e) => setAppointmentReason(e.target.value)}
+                rows={3}
+              />
+            </div>
+            
+            {selectedSymptoms.some(s => symptoms.concerning.includes(s)) && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-sm text-red-800 font-medium">
+                  ⚠️ You have selected concerning symptoms. 
+                  We recommend scheduling an urgent appointment.
+                </p>
+              </div>
+            )}
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setScheduleDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={confirmScheduleAppointment}>
+              Confirm Appointment
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Contact Healthcare Provider Dialog */}
+      <Dialog open={contactDialogOpen} onOpenChange={setContactDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center">
+              <Phone className="h-5 w-5 mr-2 text-primary" />
+              Contact Healthcare Provider
+            </DialogTitle>
+            <DialogDescription>
+              Choose how you'd like to contact your healthcare provider
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Contact Method</Label>
+              <Select value={contactMethod} onValueChange={setContactMethod}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select contact method" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="phone">Request Phone Call</SelectItem>
+                  <SelectItem value="email">Send Email</SelectItem>
+                  <SelectItem value="portal">Patient Portal Message</SelectItem>
+                  {selectedSymptoms.some(s => symptoms.concerning.includes(s)) && (
+                    <SelectItem value="emergency" className="text-red-600">
+                      Emergency Contact (911)
+                    </SelectItem>
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Urgency Level</Label>
+              <Select value={urgencyLevel} onValueChange={setUrgencyLevel}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="normal">Normal - Within 48 hours</SelectItem>
+                  <SelectItem value="urgent">Urgent - Within 24 hours</SelectItem>
+                  {selectedSymptoms.some(s => symptoms.concerning.includes(s)) && (
+                    <SelectItem value="emergency" className="text-red-600">
+                      Emergency - Immediate
+                    </SelectItem>
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="contact-message">Message</Label>
+              <Textarea
+                id="contact-message"
+                placeholder="Describe your symptoms and concerns"
+                value={contactMessage}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setContactMessage(e.target.value)}
+                rows={4}
+              />
+            </div>
+            
+            {urgencyLevel === 'emergency' && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-sm text-red-800 font-medium">
+                  🚨 For emergencies, please call 911 or go to the nearest emergency room immediately.
+                </p>
+              </div>
+            )}
+            
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800">
+                <strong>Your symptoms:</strong> {selectedSymptoms.join(', ') || 'None selected'}
+              </p>
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setContactDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={confirmContactProvider}
+              className={urgencyLevel === 'emergency' ? 'bg-red-600 hover:bg-red-700' : ''}
+            >
+              {urgencyLevel === 'emergency' ? 'Contact Emergency' : 'Send Message'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
